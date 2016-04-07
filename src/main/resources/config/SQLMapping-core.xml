@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<sql-mapping>
+    <package name="Catalog">
+        <query name="listSubLayer">
+            <sql>from Catalog t where t.treeNode.idLayer like concat(?,'%') and t.type=? and t.treeNode.idLayer &lt;&gt;
+                :Catalog_listSubLayer_0
+            </sql>
+            <appender name="length">and length(t.treeNode.idLayer) =?</appender>
+            <appender name="lengthlt">and length(t.treeNode.idLayer) &lt;=? and
+                length(t.treeNode.idLayer)&gt;?
+            </appender>
+            <appender name="type">and type =?</appender>
+            <appender name="order">
+                <mysql>order by substring(t.treeNode.idLayer,1,locate(t.id,t.treeNode.idLayer)-1),t.treeNode.orderNo
+                </mysql>
+                <oracle>order by substr(t.treeNode.idLayer,1,INSTR(t.id,t.treeNode.idLayer)-1),t.treeNode.orderNo
+                </oracle>
+            </appender>
+        </query>
+        <query name="query">
+            <sql>select new Catalog(d,n) from CatalogTreeNode n inner join n.data d where 1=1</sql>
+            <appender name="parentId">and n.parentId=:parentId</appender>
+            <appender name="depthGreateThan">and n.depth&gt;:depthGreateThan</appender>
+            <appender name="depthLessThan">and n.depth&lt;:depthLessThan</appender>
+            <appender name="depth">and n.depth = :depth</appender>
+            <appender name="idLayer">and n.idLayer=:idLayer</appender>
+            <appender name="idLayerLike">and n.idLayer like concat(:idLayerLike,'%')</appender>
+            <appender name="aliasLike">and d.name like concat('%',:alias,'%')</appender>
+            <appender name="nameLike">and d.name like concat('%',:name,'%')</appender>
+            <appender name="name">and d.name=:name</appender>
+            <appender name="status">and d.status=:status</appender>
+            <appender name="display">and d.display=:display</appender>
+            <appender name="type">and d.type=:type</appender>
+            <appender name="id">and d.id=:id</appender>
+            <appender name="orderNo"> order by n.orderNo</appender>
+        </query>
+    </package>
+    <package name="CatalogAuth">
+        <query name="list">
+            <sql>from CatalogAuth t</sql>
+            <appender name="parent">where ? like t.catalogLayer
+            </appender>
+            <appender name="role">and t.role.id=?
+            </appender>
+            <appender name="order">order by t.catalogLayer desc,t.updateTime
+                desc
+            </appender>
+            <appender name="orderuser">order by t.role.id,t.catalogLayer
+                desc,t.updateTime
+                desc
+            </appender>
+        </query>
+    </package>
+
+
+</sql-mapping>

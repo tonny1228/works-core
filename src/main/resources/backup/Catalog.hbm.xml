@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-12-18 9:36:34 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="works.tonny.apps.core.Catalog" table="s_catalog">
+        <id name="id" type="string">
+            <column name="id" length="50"/>
+            <generator class="assigned"/>
+        </id>
+        <property name="admin" type="string">
+            <column name="admin" length="50"/>
+        </property>
+        <property name="alias" type="string">
+            <column name="alias" length="300"/>
+        </property>
+        <property name="description" type="string">
+            <column name="description"/>
+        </property>
+        <property name="display" type="int">
+            <column name="display" not-null="true"/>
+        </property>
+        <property name="name" type="string">
+            <column name="name" length="300"/>
+        </property>
+        <property name="status" type="int">
+            <column name="status" not-null="true"/>
+        </property>
+        <property name="type" type="int">
+            <column name="type" not-null="true"/>
+        </property>
+        <property name="updateTime" type="java.util.Date">
+            <column name="update_time" length="19"/>
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="coreServiceFactory" class="works.tonny.apps.core.CoreServiceFactory$Helper">
+        <property name="catalogService" ref="catalogService"/>
+        <property name="catalogAuthService" ref="catalogAuthService"/>
+        <property name="attachService" ref="attachService"/>
+        <property name="attachReferenceService" ref="attachReferenceService"/>
+        <property name="elementService" ref="elementService"/>
+        <property name="formElementService" ref="formElementService"/>
+        <property name="formService" ref="formService"/>
+        <property name="logService" ref="logService"/>
+        <property name="mailService" ref="mailService"/>
+        <property name="idGeneratorService" ref="generatorService"/>
+        <property name="settingService" ref="settingService"/>
+    </bean>
+
+
+    <bean name="catalogService" class="works.tonny.apps.core.service.CatalogServiceImpl">
+        <property name="catalogDAO" ref="catalogDAO"/>
+        <property name="treeService">
+            <bean name="treeNodeservice" class="works.tonny.apps.core.service.TreeServiceImpl">
+                <property name="treeNodeDAO">
+                    <bean name="treeNodeDAO" parent="abstractDao">
+                        <property name="proxyInterfaces">
+                            <value>works.tonny.apps.core.dao.TreeNodeDAO</value>
+                        </property>
+                        <property name="target" ref="baseDAOSupport"/>
+                        <property name="targetSource.target.entityClass" value="works.tonny.apps.core.CatalogTreeNode"/>
+                        <property name="targetSource.target.ownerClass" value="works.tonny.apps.core.CatalogDataOwner"/>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+    <bean name="catalogDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.core.dao.CatalogDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.core.Catalog"/>
+        <property name="targetSource.target.ownerClass" value="works.tonny.apps.core.CatalogDataOwner"/>
+    </bean>
+
+    <bean name="catalogAction" class="works.tonny.apps.core.action.CatalogAction"
+          scope="prototype">
+        <property name="catalogService" ref="catalogService"/>
+        <property name="catalogAuthService" ref="catalogAuthService"/>
+        <property name="customPattern" value="/catalog/(.*/)\w+\.action.*"/>
+    </bean>
+
+
+    <bean name="catalogReadAction" class="works.tonny.apps.core.action.CatalogReadAction"
+          scope="prototype">
+        <property name="catalogService" ref="catalogService"/>
+        <property name="catalogAuthService" ref="catalogAuthService"/>
+        <property name="customPattern" value="/catalog/(.*/)\w+\.action.*"/>
+    </bean>
+
+
+    <bean name="catalogAuthService" class="works.tonny.apps.core.service.CatalogAuthServiceImpl">
+        <property name="catalogAuthDAO" ref="catalogAuthDAO"/>
+        <property name="catalogDAO" ref="catalogDAO"/>
+    </bean>
+    <bean name="catalogAuthDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.core.dao.CatalogAuthDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.core.CatalogAuth"/>
+    </bean>
+    <bean name="catalogAuthAction" class="works.tonny.apps.core.action.CatalogAuthAction"
+          scope="prototype">
+        <property name="catalogService" ref="catalogService"/>
+        <property name="catalogAuthService" ref="catalogAuthService"/>
+    </bean>
+
+
+    <bean name="attachService" class="works.tonny.apps.core.service.AttachServiceImpl">
+        <property name="attachDAO" ref="attachDAO"/>
+        <property name="baseFolder" value="${webroot}/upload">
+        </property>
+        <property name="pathPattern"
+                  value="${attach.catalog}/${#date.yyyy-MM}/${attach.id}.${attach.fileext}">
+        </property>
+    </bean>
+    <bean name="attachDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.core.dao.AttachDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.core.Attachment"/>
+    </bean>
+
+    <bean name="uploadAction" class="works.tonny.apps.core.action.UploadAction"
+          scope="prototype">
+        <property name="attachService" ref="attachService"/>
+        <property name="attachReferenceService" ref="attachReferenceService"/>
+        <property name="folder" value="specail"/>
+    </bean>
+
+    <bean name="attachAction" class="works.tonny.apps.core.action.AttachmentAction"
+          scope="prototype">
+        <property name="attachService" ref="attachService"/>
+        <property name="attachReferenceService" ref="attachReferenceService"/>
+        <property name="folder" value="specail"/>
+    </bean>
+
+    <bean name="memberUploadAction" class="works.tonny.apps.core.action.MemberUploadAction"
+          scope="prototype">
+        <property name="attachService" ref="attachService"/>
+        <property name="attachReferenceService" ref="attachReferenceService"/>
+        <property name="folder" value="specail"/>
+    </bean>
+
+    <bean name="memberAttachAction" class="works.tonny.apps.core.action.AttachMemberAction"
+          scope="prototype">
+        <property name="attachService" ref="attachService"/>
+        <property name="attachReferenceService" ref="attachReferenceService"/>
+        <property name="folder" value="specail"/>
+    </bean>
+
+    <bean name="attachReferenceService"
+          class="works.tonny.apps.core.service.AttachReferenceServiceImpl">
+        <property name="attachReferenceDAO" ref="attachReferenceDAO"/>
+        <property name="attachDAO" ref="attachDAO"/>
+    </bean>
+    <bean name="attachReferenceDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.core.dao.AttachReferenceDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.core.AttachReference"/>
+    </bean>
+
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.163.com"/>
+        <property name="port" value="25"/>
+        <property name="username" value="neusoft_csr"/>
+        <property name="password" value="GAI.pw-90days2"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.from">neusoft_csr@163.com</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean name="elementService" class="works.tonny.apps.core.service.ElementServiceImpl">
+        <property name="elementDAO" ref="elementDAO"/>
+    </bean>
+    <bean name="elementDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.core.dao.ElementDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.core.Element"/>
+    </bean>
+    <bean name="elementAction" class="works.tonny.apps.core.action.ElementAction"
+          scope="prototype">
+        <property name="elementService" ref="elementService"/>
+    </bean>
+    <bean name="formService" class="works.tonny.apps.core.service.FormServiceImpl">
+        <property name="formDAO" ref="formDAO"/>
+        <property name="formValueDAO" ref="formValueDAO"/>
+        <property name="formElementDAO" ref="formElementDAO"/>
+    </bean>
+    <bean name="formDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.core.dao.FormDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.core.Form"/>
+    </bean>
+    <bean name="formAction" class="works.tonny.apps.core.action.FormAction"
+          scope="prototype">
+        <property name="formService" ref="formService"/>
+    </bean>
+    <bean name="formElementService" class="works.tonny.apps.core.service.FormElementServiceImpl">
+        <property name="formElementDAO" ref="formElementDAO"/>
+        <property name="formDAO" ref="formDAO"/>
+    </bean>
+    <bean name="formElementDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.core.dao.FormElementDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.core.FormElement"/>
+    </bean>
+    <bean name="formElementAction" class="works.tonny.apps.core.action.FormElementAction"
+          scope="prototype">
+        <property name="formElementService" ref="formElementService"/>
+        <property name="formService" ref="formService"/>
+        <property name="elementService" ref="elementService"/>
+    </bean>
+    <bean name="formValueDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.core.dao.FormValueDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.core.FormValue"/>
+    </bean>
+
+
+    <bean name="mailService" class="works.tonny.apps.core.service.MailServiceImpl">
+        <property name="mailDAO" ref="mailDAO"/>
+        <property name="mailSender" ref="mailSender"/>
+        <property name="attachReferenceService" ref="attachReferenceService"/>
+        <property name="attachService" ref="attachService"/>
+    </bean>
+    <bean name="mailDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.core.dao.MailDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.core.Mail"/>
+    </bean>
+    <bean name="mailAction" class="works.tonny.apps.core.action.MailAction"
+          scope="prototype">
+        <property name="mailService" ref="mailService"/>
+        <property name="attachReferenceService" ref="attachReferenceService"/>
+    </bean>
+
+
+    <bean name="idgAction" class="works.tonny.apps.core.action.IDGeneratorAction"
+          scope="prototype">
+        <property name="generatorService" ref="generatorService"/>
+    </bean>
+
+    <bean name="generatorService" class="works.tonny.apps.core.service.IDGeneratorServiceImpl">
+        <property name="sequenceDAO" ref="sequenceDAO"/>
+        <property name="generatorDAO" ref="generatorDAO"/>
+    </bean>
+
+    <bean name="generatorDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.core.dao.IDGeneratorDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.core.IDGenerator"/>
+        <property name="targetSource.target.ownerClass" value="works.tonny.apps.core.IDGeneratorDataOwner"/>
+    </bean>
+
+    <bean name="sequenceDAO" class="works.tonny.apps.core.dao.IDSequenceDAOImpl">
+        <property name="dao" ref="baseDAO"/>
+    </bean>
+
+
+    <bean name="settingDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.core.dao.SettingDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.core.Setting"/>
+    </bean>
+
+    <bean name="settingService" class="works.tonny.apps.core.service.SettingServiceImpl">
+        <property name="settingDAO" ref="settingDAO"/>
+    </bean>
+
+    <bean id="dataOwnerConfigService" class="works.tonny.apps.auth.DataOwnerConfigServiceImpl">
+        <property name="dataOwnerConfigDAO">
+            <bean name="dataOwnerConfigDAO" parent="abstractDao">
+                <property name="proxyInterfaces">
+                    <value>works.tonny.apps.auth.DataOwnerConfigDAO</value>
+                </property>
+                <property name="target" ref="baseDAOSupport"/>
+                <property name="targetSource.target.entityClass" value="works.tonny.apps.auth.DataOwnerConfig"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean class="works.tonny.apps.auth.DataOwnerConfigPosPrcessor">
+        <property name="dataOwnerConfigService" ref="dataOwnerConfigService">
+
+        </property>
+    </bean>
+
+
+    <bean name="logDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.core.dao.LogDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.core.Log"/>
+    </bean>
+
+    <bean name="logService" class="works.tonny.apps.core.service.LogServiceImpl">
+        <property name="logDAO" ref="logDAO"/>
+    </bean>
+
+    <bean name="logAction" class="works.tonny.apps.core.action.LogAction">
+        <property name="logService" ref="logService"/>
+    </bean>
+
+
+</beans>

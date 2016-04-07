@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-12-18 9:36:34 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="works.tonny.apps.core.AttachReference" table="s_attach_reference">
+        <id name="id" type="string">
+            <column name="ID" length="50"/>
+            <generator class="assigned"/>
+        </id>
+        <many-to-one name="attachment" class="works.tonny.apps.core.Attachment" fetch="select">
+            <column name="ATTACH_ID" length="50"/>
+        </many-to-one>
+        <property name="objectId" type="string">
+            <column name="OBJECT_ID" length="50"/>
+        </property>
+        <property name="catalog" type="string">
+            <column name="CATALOG" length="100"/>
+        </property>
+        <property name="updateTime" type="java.util.Date">
+            <column name="UPDATE_TIME" length="19"/>
+        </property>
+        <property name="admin" type="string">
+            <column name="ADMIN" length="50"/>
+        </property>
+    </class>
+</hibernate-mapping>

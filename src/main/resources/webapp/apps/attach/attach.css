@@ -1,0 +1,13 @@
+#tabs{padding: 5px;}
+._page_nav{clear: both}
+.filediv{width: 130px;height:120px;float: left;text-align: center;}
+.fileimg{height: 100px;width: 128px;overflow: hidden;margin: auto;border: 1px solid #aaa;padding: 2px;}
+.image{width: 128px;cursor: pointer;background:url("images/attach.png");background-repeat: no-repeat; }
+.filename{width: 120px;overflow: hidden;height: 20px;line-height: 20px;text-align: center;margin: auto;}
+.rar,.zip,.tar,.gz{background-image:url("images/rar.png");}
+.doc,.docx{background-image:url("images/word.png");}
+.xls,.xlsx{background-image:url("images/excel.png");}
+.ppt,.pptx{background-image:url("images/ppt.png");}
+.mp4,.avi,.swf,.mpeg,.flv,.mpg,.rm,.rmvb,.mov,.asf,.wmv{background-image:url("images/video.png");}
+.mp3{background-image:url("images/music.png");}
+

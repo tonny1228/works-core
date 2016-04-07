@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+	<description>
+		A tag library exercising SimpleTag handlers.
+	</description>
+	<tlib-version>1.0</tlib-version>
+
+	<short-name>fn</short-name>
+	<uri>/apps-fn</uri>
+	<function>
+		<name>substring</name>
+		<function-class>works.tonny.apps.web.Functions</function-class>
+		<function-signature>java.lang.String substring(java.lang.String,int,java.lang.String)</function-signature>
+		<example>
+		</example>
+	</function>
+	<function>
+		<name>substringBeforeLast</name>
+		<function-class>works.tonny.apps.web.Functions</function-class>
+		<function-signature>java.lang.String substringBeforeLast(java.lang.String,java.lang.String)</function-signature>
+		<example>
+		</example>
+	</function>
+	<function>
+		<name>substringAfterLast</name>
+		<function-class>works.tonny.apps.web.Functions</function-class>
+		<function-signature>java.lang.String substringAfterLast(java.lang.String,java.lang.String)</function-signature>
+		<example>
+		</example>
+	</function>
+
+	<function>
+		<name>substringBefore</name>
+		<function-class>works.tonny.apps.web.Functions</function-class>
+		<function-signature>java.lang.String substringBefore(java.lang.String,java.lang.String)</function-signature>
+		<example>
+		</example>
+	</function>
+	<function>
+		<name>substringAfter</name>
+		<function-class>works.tonny.apps.web.Functions</function-class>
+		<function-signature>java.lang.String substringAfter(java.lang.String,java.lang.String)</function-signature>
+		<example>
+		</example>
+	</function>
+
+	<function>
+		<name>urlEncode</name>
+		<function-class>works.tonny.apps.web.Functions</function-class>
+		<function-signature>java.lang.String urlEncode(java.lang.String,java.lang.String)</function-signature>
+		<example>
+		</example>
+	</function>
+
+	<function>
+		<name>formatByte</name>
+		<function-class>works.tonny.apps.web.Functions</function-class>
+		<function-signature>java.lang.String formatByte(long)</function-signature>
+		<example>
+		</example>
+	</function>
+
+
+</taglib>

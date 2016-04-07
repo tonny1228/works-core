@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <package name="catalog" extends="authed" namespace="/catalog">
+        <default-interceptor-ref name="customInterceptorStack"/>
+        <global-results>
+            <result name="list" type="redirect">list.action?id=${id}</result>
+        </global-results>
+        <action name="list" class="catalogAction" method="list">
+            <result>/apps/catalog/${customPath}list.jsp</result>
+        </action>
+        <action name="add" class="catalogAction" method="add">
+            <result name="input">/apps/catalog/${customPath}add.jsp</result>
+        </action>
+        <action name="edit" class="catalogAction" method="edit">
+            <result name="input">/apps/catalog/${customPath}edit.jsp</result>
+        </action>
+        <action name="view" class="catalogAction" method="view">
+            <result name="view">/apps/catalog/${customPath}view.jsp</result>
+        </action>
+        <action name="save" class="catalogAction" method="save">
+            <result type="redirect">view.action?id=${id}&amp;_tips=tip_save_success
+            </result>
+        </action>
+        <action name="update" class="catalogAction" method="update">
+            <result type="redirect">view.action?id=${catalog.id}&amp;_tips=tip_save_success
+            </result>
+        </action>
+        <action name="delete" class="catalogAction" method="delete">
+            <result type="redirect">list.action?id=${id}&amp;_tips=tip_delete_success
+            </result>
+        </action>
+        <action name="updateStatus" class="catalogAction" method="updateStatus">
+            <result type="redirect">view.action?id=${id}</result>
+        </action>
+        <action name="move" class="catalogAction" method="move">
+            <result type="redirect">view.action?id=${id}</result>
+        </action>
+    </package>
+
+    <package name="catalogRead" extends="default" namespace="/catalog">
+        <action name="listCatalog" class="catalogAction" method="list">
+            <result>/apps/catalog/${customPath}list.jsp</result>
+        </action>
+        <action name="tree" class="catalogReadAction" method="tree">
+            <result>/apps/catalog/tree.jsp</result>
+            <result name="node">/apps/catalog/treeNode.jsp</result>
+        </action>
+        <action name="authedTree" class="catalogReadAction" method="authedTree">
+            <result>/apps/catalog/tree.jsp</result>
+        </action>
+    </package>
+    <package name="catalogAuth" extends="authed" namespace="/catalog">
+        <action name="auth" class="catalogAuthAction" method="list">
+            <result>/apps/catalog/auth_list.jsp</result>
+        </action>
+        <action name="addAuth" class="catalogAuthAction" method="addAuth">
+            <result>/apps/catalog/auth_add.jsp</result>
+        </action>
+        <action name="updateAuth" class="catalogAuthAction" method="update">
+            <result type="redirect">auth.action?catalogId=${catalogId}&amp;_tips=tip_save_success
+            </result>
+        </action>
+        <action name="deleteAuth" class="catalogAuthAction" method="delete">
+            <result name="input">list.action?catalogId=${catalogId}&amp;_tips=tip_delete_success
+            </result>
+        </action>
+    </package>
+    <package name="file" extends="authed" namespace="/file">
+        <default-interceptor-ref name="uploadInterceptorStack"/>
+        <action name="list" class="attachAction" method="list">
+            <result>/apps/attach/list.jsp</result>
+        </action>
+        <action name="load" class="attachAction" method="upload">
+            <result>/apps/attach/upload.jsp</result>
+        </action>
+        <action name="type" class="attachAction" method="list">
+            <result>/apps/attach/list.jsp</result>
+        </action>
+        <action name="upload" class="uploadAction" method="upload">
+            <result>/apps/attach/uploaded.jsp</result>
+            <interceptor-ref name="uploadInterceptorStack"/>
+        </action>
+        <action name="specailFile" class="uploadAction" method="specailFile">
+            <result>/apps/attach/uploaded.jsp</result>
+        </action>
+        <action name="dispatchUpload" class="uploadAction" method="dispatchUpload">
+            <result>/apps/attach/uploaded.jsp</result>
+            <interceptor-ref name="uploadInterceptorStack"/>
+        </action>
+        <action name="deleteRef" class="attachAction" method="deleteRef">
+        </action>
+        <action name="ref" class="attachAction" method="ref">
+            <result>/apps/attach/uploaded.jsp</result>
+        </action>
+    </package>
+    <package name="fileMember" extends="membered" namespace="/mfile">
+        <default-interceptor-ref name="uploadInterceptorStack"/>
+        <action name="list" class="memberAttachAction" method="list">
+            <result>/apps/attach/list.jsp</result>
+        </action>
+        <action name="load" class="memberAttachAction" method="upload">
+            <result>/apps/attach/upload.jsp</result>
+        </action>
+        <action name="type" class="memberAttachAction" method="list">
+            <result>/apps/attach/list.jsp</result>
+        </action>
+        <action name="upload" class="uploadAction" method="upload">
+            <result>/apps/attach/uploaded.jsp</result>
+            <interceptor-ref name="uploadInterceptorStack"/>
+        </action>
+        <action name="specailFile" class="uploadAction" method="specailFile">
+            <result>/apps/attach/uploaded.jsp</result>
+        </action>
+        <action name="dispatchUpload" class="uploadAction"
+                method="dispatchUpload">
+            <result>/apps/attach/uploaded.jsp</result>
+            <interceptor-ref name="uploadInterceptorStack"/>
+        </action>
+        <action name="deleteRef" class="memberAttachAction" method="deleteRef">
+        </action>
+        <action name="ref" class="memberAttachAction" method="ref">
+            <result>/apps/attach/uploaded.jsp</result>
+        </action>
+    </package>
+
+
+    <package name="element" extends="authed" namespace="/element">
+        <action name="list" class="elementAction" method="list">
+            <result>/apps/element/list.jsp</result>
+        </action>
+        <action name="add" class="elementAction" method="add">
+            <result name="input">/apps/element/add.jsp</result>
+        </action>
+        <action name="edit" class="elementAction" method="edit">
+            <result name="input">/apps/element/edit.jsp</result>
+        </action>
+        <action name="view" class="elementAction" method="view">
+            <result name="view">/apps/element/view.jsp</result>
+        </action>
+        <action name="save" class="elementAction" method="save">
+            <result type="redirect">list.action?_tips=tip_save_success</result>
+        </action>
+        <action name="update" class="elementAction" method="update">
+            <result type="redirect">list.action?_tips=tip_save_success</result>
+        </action>
+        <action name="delete" class="elementAction" method="delete">
+            <result type="redirect">list.action?_tips=tip_delete_success</result>
+        </action>
+    </package>
+    <package name="form" extends="authed" namespace="/form">
+        <action name="list" class="formAction" method="list">
+            <result>/apps/form/list.jsp</result>
+        </action>
+        <action name="add" class="formAction" method="add">
+            <result name="input">/apps/form/add.jsp</result>
+        </action>
+        <action name="edit" class="formAction" method="edit">
+            <result name="input">/apps/form/edit.jsp</result>
+        </action>
+        <action name="view" class="formAction" method="view">
+            <result name="view">/apps/form/view.jsp</result>
+        </action>
+        <action name="save" class="formAction" method="save">
+            <result type="redirect">list.action?_tips=tip_save_success</result>
+        </action>
+        <action name="update" class="formAction" method="update">
+            <result type="redirect">list.action?_tips=tip_save_success</result>
+        </action>
+        <action name="delete" class="formAction" method="delete">
+            <result type="redirect">list.action?_tips=tip_delete_success</result>
+        </action>
+        <action name="write" class="formAction" method="write">
+            <result>/apps/form/write.jsp</result>
+        </action>
+        <action name="saveFormValues" class="formAction" method="saveFormValues">
+            <result type="redirect">${url}</result>
+        </action>
+        <action name="deleteAValues" class="formAction" method="deleteAValues">
+            <result type="redirect">${url}</result>
+        </action>
+    </package>
+    <package name="formElement" extends="authed" namespace="/formElement">
+        <action name="add" class="formElementAction" method="add">
+            <result name="input">/apps/form/addElement.jsp</result>
+        </action>
+        <action name="edit" class="formElementAction" method="edit">
+            <result name="input">/apps/form/editElement.jsp</result>
+        </action>
+        <action name="save" class="formElementAction" method="save">
+            <result type="redirect">../form/view.action?id=${form}&amp;_tips=tip_save_success
+            </result>
+        </action>
+        <action name="update" class="formElementAction" method="update">
+            <result type="redirect">../form/view.action?id=${formElement.form.id}&amp;_tips=tip_save_success
+            </result>
+        </action>
+        <action name="delete" class="formElementAction" method="delete">
+            <result type="redirect">../form/view.action?id=${form}&amp;_tips=tip_delete_success
+            </result>
+        </action>
+    </package>
+
+    <package name="mail" extends="authed" namespace="/mail">
+        <action name="list" class="mailAction" method="list">
+            <result>/apps/mail/list.jsp</result>
+        </action>
+        <action name="add" class="mailAction" method="add">
+            <result name="input">/apps/mail/add.jsp</result>
+        </action>
+        <action name="edit" class="mailAction" method="edit">
+            <result name="input">/apps/mail/edit.jsp</result>
+        </action>
+        <action name="view" class="mailAction" method="view">
+            <result name="view">/apps/mail/view.jsp</result>
+        </action>
+        <action name="save" class="mailAction" method="save">
+            <result type="redirect">list.action?_tips=tip_save_success</result>
+        </action>
+        <action name="update" class="mailAction" method="update">
+            <result type="redirect">list.action?_tips=tip_save_success</result>
+        </action>
+        <action name="delete" class="mailAction" method="delete">
+            <result type="redirect">list.action?_tips=tip_delete_success</result>
+        </action>
+    </package>
+
+    <package name="idg" extends="authed" namespace="/idg">
+        <action name="add">
+            <result>/apps/idgen/add.jsp</result>
+        </action>
+        <action name="*" class="idgAction" method="{1}">
+            <result type="redirect">list.action?_tips=tip_{1}_success</result>
+            <result name="listjsp">/apps/idgen/list.jsp</result>
+            <result name="add">/apps/idgen/add.jsp</result>
+            <result name="edit">/apps/idgen/edit.jsp</result>
+        </action>
+    </package>
+
+    <package name="setting" extends="authed" namespace="/deploy">
+        <action name="*" class="settingAction" method="{1}">
+            <result name="setting">/apps/setting.jsp</result>
+        </action>
+    </package>
+
+    <package name="log" extends="authed" namespace="/log">
+        <action name="*" class="logAction" method="{1}">
+            <result name="list">/apps/log/list.jsp</result>
+        </action>
+    </package>
+
+
+</struts>

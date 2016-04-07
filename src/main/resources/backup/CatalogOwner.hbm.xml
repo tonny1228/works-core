@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-12-18 9:36:34 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="works.tonny.apps.core.CatalogDataOwner" table="s_catalog_owner">
+        <id name="id" type="string">
+            <column name="id" length="50"/>
+            <generator class="assigned"/>
+        </id>
+        <many-to-one name="data" class="works.tonny.apps.core.Catalog" fetch="select">
+            <column name="data_id" length="50" not-null="true"/>
+        </many-to-one>
+        <property name="ownerId" type="string">
+            <column name="owner_id" length="100"/>
+        </property>
+        <property name="ownerName" type="string">
+            <column name="owner_name" length="100"/>
+        </property>
+        <property name="ownerType" type="string">
+            <column name="owner_type" length="100"/>
+        </property>
+        <property name="authTime" type="java.util.Date">
+            <column name="auth_time" length="19"/>
+        </property>
+        <property name="authBeginTime" type="java.util.Date">
+            <column name="auth_begin_time" length="19"/>
+        </property>
+        <property name="authEndTime" type="java.util.Date">
+            <column name="auth_end_time" length="19"/>
+        </property>
+        <property name="writable" type="boolean">
+            <column name="writable"></column>
+        </property>
+    </class>
+</hibernate-mapping>

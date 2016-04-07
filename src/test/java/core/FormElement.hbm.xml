@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2012-7-17 9:34:15 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="works.tonny.apps.core.FormElement" table="fr_form_element">
+        <id name="id" type="string">
+            <column name="id" length="32" />
+            <generator class="uuid" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="50" />
+        </property>
+        <many-to-one name="form" class="works.tonny.apps.core.Form" fetch="select" lazy="false">
+            <column name="form_id" length="32" not-null="true" />
+        </many-to-one>
+        <many-to-one name="element" class="works.tonny.apps.core.Element" fetch="select" lazy="false">
+            <column name="element_id" length="32" not-null="true" />
+        </many-to-one>
+        <property name="foreignForm" type="string">
+            <column name="foreign_form" length="32" />
+        </property>
+        <property name="foreignKey" type="string">
+            <column name="foreign_key" length="32" />
+        </property>
+        <property name="list" type="java.lang.Integer">
+            <column name="list" />
+        </property>
+        <property name="search" type="java.lang.Integer">
+            <column name="search" />
+        </property>
+        <property name="orderNo" type="java.lang.Integer">
+            <column name="order_no" />
+        </property>
+        <property name="updateTime" type="timestamp">
+            <column name="update_time" length="19" />
+        </property>
+        <property name="admin" type="string">
+            <column name="admin" length="32" />
+        </property>
+    </class>
+</hibernate-mapping>

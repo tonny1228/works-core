@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<include file="config/struts-*.xml"></include>
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.ui.theme" value="simple" />
+	<constant name="struts.objectFactory" value="spring" />
+	<constant name="struts.custom.i18n.resources" value="resources" />
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.ognl.allowStaticMethodAccess" value="true" />
+	<constant name="struts.multipart.maxSize" value="104857600" />
+	<constant name="struts.freemarker.templatesCache" value="true" />
+	<package name="default" extends="struts-default" namespace="/">
+		<interceptors>
+			<interceptor name="exceptionInterceptor"
+				class="works.tonny.apps.support.ExceptionInterceptor" />
+			<interceptor name="OutputInterceptor"
+				class="works.tonny.apps.support.OutputInterceptor" />
+			<interceptor-stack name="commonInterceptorStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="exceptionInterceptor" />
+				<interceptor-ref name="OutputInterceptor" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="commonInterceptorStack" />
+		<global-results>
+			<result name="error">/error.jsp</result>
+			<result name="success">/success.jsp</result>
+			<result name="login" type="redirect">/apps/member/login.jsp?url=${url}
+			</result>
+			<result name="_output">${forward}</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping exception="java.lang.Exception"
+				result="error" />
+		</global-exception-mappings>
+	</package>
+	<package name="authed" extends="struts-default" namespace="/">
+		<interceptors>
+			<interceptor name="exceptionInterceptor"
+				class="works.tonny.apps.support.ExceptionInterceptor" />
+			<interceptor name="userAuthInterceptor"
+				class="works.tonny.apps.user.web.UserAuthInterceptor" />
+			<interceptor name="OutputInterceptor"
+				class="works.tonny.apps.support.OutputInterceptor" />
+			<interceptor-stack name="authedInterceptorStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="exceptionInterceptor" />
+				<interceptor-ref name="userAuthInterceptor" />
+				<interceptor-ref name="OutputInterceptor" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="authedInterceptorStack" />
+		<global-results>
+			<result name="login" type="redirect">/apps/admin_login.jsp?url=${url}</result>
+			<result name="main" type="redirect">/apps/admin_main.jsp</result>
+			<result name="error">/apps/admin_error.jsp</result>
+			<result name="success">/apps/admin_success.jsp</result>
+			<result name="_output">${forward}</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping exception="java.lang.Exception"
+				result="error" />
+		</global-exception-mappings>
+	</package>
+	<package name="membered" extends="struts-default" namespace="/">
+		<interceptors>
+			<interceptor name="exceptionInterceptor"
+				class="works.tonny.apps.support.ExceptionInterceptor" />
+			<interceptor name="userAuthInterceptor"
+				class="works.tonny.apps.user.web.MemberAuthInterceptor" />
+			<interceptor name="OutputInterceptor"
+				class="works.tonny.apps.support.OutputInterceptor" />
+			<interceptor-stack name="authedInterceptorStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="exceptionInterceptor" />
+				<interceptor-ref name="userAuthInterceptor" />
+				<interceptor-ref name="OutputInterceptor" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="authedInterceptorStack" />
+		<global-results>
+			<result name="login" type="redirect">/apps/member/login.jsp?url=${url}
+			</result>
+			<result name="main" type="redirect">/apps/member/main.jsp</result>
+			<result name="error">/error.jsp</result>
+			<result name="success">/success.jsp</result>
+			<result name="_output">${forward}</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping exception="java.lang.Exception"
+				result="error" />
+		</global-exception-mappings>
+	</package>
+
+
+
+</struts>

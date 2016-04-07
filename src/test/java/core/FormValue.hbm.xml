@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2012-7-17 9:34:15 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="works.tonny.apps.core.FormValue" table="fr_form_value">
+		<id name="id" type="string">
+			<column name="id" length="32" />
+			<generator class="uuid" />
+		</id>
+		<property name="itemId" type="string">
+			<column name="item_id" length="32" not-null="true" />
+		</property>
+		<many-to-one name="formElement" class="works.tonny.apps.core.FormElement"
+			fetch="select" lazy="false">
+			<column name="element_id" length="32" not-null="true" />
+		</many-to-one>
+		<joined-subclass name="works.tonny.apps.core.FormClobvalue"
+			table="fr_form_clobvalue">
+			<key column="id"></key>
+			<property name="value" type="string">
+				<column name="value" />
+			</property>
+		</joined-subclass>
+		<joined-subclass name="works.tonny.apps.core.FormTinyvalue"
+			table="fr_form_tinyvalue">
+			<key column="id"></key>
+			<property name="value" type="string">
+				<column name="value" />
+			</property>
+		</joined-subclass>
+	</class>
+</hibernate-mapping>

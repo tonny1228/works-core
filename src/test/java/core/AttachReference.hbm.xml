@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="works.tonny.apps.core">
+	<class name="AttachReference" table="s_attach_reference">
+		<id name="id" type="java.lang.String" column="id">
+			<generator class="uuid"></generator>
+		</id>
+		<property name="updateTime" type="timestamp" column="update_time" />
+		<property name="catalog" />
+		<property name="objectId" type="java.lang.String" column="object_id" />
+		<property name="admin" />
+		<many-to-one name="attachment" class="Attachment"
+			not-null="true" lazy="false">
+			<column name="attach_id" />
+		</many-to-one>
+	</class>
+</hibernate-mapping>

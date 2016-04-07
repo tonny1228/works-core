@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2012-12-3 13:14:26 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="works.tonny.apps.user.model.Job" table="u_job">
+        <id name="id" type="string">
+            <column name="ID" length="32" />
+            <generator class="uuid" />
+        </id>
+        <property name="name" type="string">
+            <column name="NAME" length="200" not-null="true" />
+        </property>
+        <property name="info" type="string">
+            <column name="INFO" length="500" />
+        </property>
+        <property name="orderNo" type="java.lang.Integer">
+            <column name="ORDER_NO" />
+        </property>
+        <set name="jobLevels" table="u_job_level" inverse="true" lazy="false" fetch="select" order-by="level desc">
+            <key>
+                <column name="JOB_ID" length="32" not-null="true" />
+            </key>
+            <one-to-many class="works.tonny.apps.user.model.JobLevel" />
+        </set>
+    </class>
+</hibernate-mapping>

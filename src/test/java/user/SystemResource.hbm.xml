@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2012-12-3 13:14:26 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="works.tonny.apps.user.SystemResource" table="a_system_resource">
+		<id name="id" type="string">
+			<column name="ID" length="32" />
+			<generator class="assigned" />
+		</id>
+		<property name="name" type="string">
+			<column name="NAME" length="50" not-null="true" />
+		</property>
+		<property name="packageName" type="string">
+			<column name="PACKAGE_NAME" length="200" not-null="true" />
+		</property>
+		<property name="api" type="string">
+			<column name="api" length="200"/>
+		</property>
+		<property name="url" type="string">
+			<column name="URL" length="300"/>
+		</property>
+		<property name="description" type="string">
+			<column name="DESCRIPTION" length="500" />
+		</property>
+		<property name="type" type="java.lang.Integer">
+			<column name="TYPE" />
+		</property>
+		<property name="updateTime" type="timestamp">
+			<column name="UPDATE_TIME" length="19" />
+		</property>
+		<property name="admin" type="string">
+			<column name="ADMIN" length="32" />
+		</property>
+		<many-to-one name="parent" class="works.tonny.apps.user.SystemResource"
+			fetch="select">
+			<column name="PARENT_ID" length="32" />
+		</many-to-one>
+		<set name="subs" table="a_system_resource" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PARENT_ID" length="32" not-null="true" />
+            </key>
+            <one-to-many class="works.tonny.apps.user.SystemResource" />
+        </set>
+	</class>
+</hibernate-mapping>

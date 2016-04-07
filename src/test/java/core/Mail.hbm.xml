@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2012-5-8 13:17:00 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="works.tonny.apps.core.Mail" table="s_mail" >
+        <id name="id" type="string">
+            <column name="ID" length="32" />
+            <generator class="uuid" />
+        </id>
+        <property name="title" type="string">
+            <column name="title" length="200" />
+        </property>
+        <property name="content" type="string">
+            <column name="content" />
+        </property>
+        <property name="to" type="string">
+            <column name="mail" length="2000" />
+        </property>
+        <property name="cc" type="string">
+            <column name="CC" length="2000" />
+        </property>
+        <property name="bcc" type="string">
+            <column name="BCC" length="2000" />
+        </property>
+        <property name="sendDate" type="timestamp">
+            <column name="SEND_DATE" length="19" />
+        </property>
+        <property name="updateDate" type="timestamp">
+            <column name="UPDATE_DATE" length="19" not-null="true" />
+        </property>
+        <property name="updateUser" type="string">
+            <column name="UPDATE_USER" length="20" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2012-12-3 13:14:26 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="works.tonny.apps.user.User" table="u_user">
+		<comment>&#228;&#186;&#186;&#229;&#145;&#152;</comment>
+		<id name="id" type="string">
+			<column name="ID" length="32" />
+			<generator class="uuid" />
+		</id>
+		<property name="username" type="string">
+			<column name="USERNAME" length="50" not-null="true">
+				<comment>&#231;&#153;&#187;&#229;&#189;&#149;&#229;&#144;&#141;</comment>
+			</column>
+		</property>
+		<property name="password" type="string">
+			<column name="PASSWORD" length="50">
+				<comment>&#229;&#143;&#163;&#228;&#187;&#164;</comment>
+			</column>
+		</property>
+		<property name="name" type="string">
+			<column name="NAME" length="50">
+				<comment>&#231;&#156;&#159;&#229;&#174;&#158;&#229;&#167;&#147;&#229;&#144;&#141;</comment>
+			</column>
+		</property>
+		<property name="birthday" type="date">
+			<column name="BIRTHDAY" length="10">
+				<comment>&#231;&#148;&#159;&#230;&#151;&#165;</comment>
+			</column>
+		</property>
+		<property name="telNo" type="string">
+			<column name="TEL_NO" length="50">
+				<comment>&#229;&#138;&#158;&#229;&#133;&#172;&#231;&#148;&#181;&#232;&#175;&#157;</comment>
+			</column>
+		</property>
+		<property name="mobileNo" type="string">
+			<column name="MOBILE_NO" length="50">
+				<comment>&#231;&#167;&#187;&#229;&#138;&#168;&#231;&#148;&#181;&#232;&#175;&#157;</comment>
+			</column>
+		</property>
+		<property name="email" type="string">
+			<column name="EMAIL" length="50">
+				<comment>&#231;&#148;&#181;&#229;&#173;&#144;&#233;&#130;&#174;&#228;&#187;&#182;</comment>
+			</column>
+		</property>
+		<property name="address" type="string">
+			<column name="ADDRESS" length="200">
+				<comment>&#233;&#128;&#154;&#228;&#191;&#161;&#229;&#156;&#176;&#229;&#157;&#128;</comment>
+			</column>
+		</property>
+		<property name="zip" type="string">
+			<column name="ZIP" length="10">
+				<comment>&#233;&#128;&#154;&#228;&#191;&#161;&#233;&#130;&#174;&#230;&#148;&#191;&#231;&#188;&#150;&#231;&#160;&#129;</comment>
+			</column>
+		</property>
+		<property name="sex" type="string">
+			<column name="SEX" length="1">
+				<comment>&#230;&#128;&#167;&#229;&#136;&#171;</comment>
+			</column>
+		</property>
+		<property name="status">
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">works.tonny.apps.user.UserStatus</param>
+				<param name="type">12</param>
+			</type>
+		</property>
+		<property name="info" type="string">
+			<column name="INFO" length="1000" />
+		</property>
+		<property name="orderNo" type="java.lang.Integer">
+			<column name="ORDER_NO" />
+		</property>
+		<property name="regTime" type="date">
+			<column name="REG_TIME" length="10" />
+		</property>
+		<set name="roles" table="u_user_role" inverse="false" lazy="true"
+			fetch="select">
+			<key>
+				<column name="USER_ID" length="32" not-null="true" />
+			</key>
+			<many-to-many entity-name="works.tonny.apps.user.Role">
+				<column name="ROLE_ID" length="32" not-null="true" />
+			</many-to-many>
+		</set>
+		<joined-subclass name="works.tonny.apps.user.model.UserInfo"
+			table="u_user_info">
+			<key column="USER_ID" />
+			<many-to-one name="position" class="works.tonny.apps.user.model.Position"
+				fetch="select">
+				<column name="POSITION_ID" length="32" />
+			</many-to-one>
+			<many-to-one name="title" class="works.tonny.apps.user.model.Title"
+				fetch="select">
+				<column name="TITLE_ID" length="32" />
+			</many-to-one>
+			<set name="positions" table="u_user_position" inverse="false"
+				lazy="true" fetch="select">
+				<key>
+					<column name="USER_ID" length="32" not-null="true" />
+				</key>
+				<many-to-many entity-name="works.tonny.apps.user.model.Position">
+					<column name="POSITION_ID" length="32" not-null="true" />
+				</many-to-many>
+			</set>
+		</joined-subclass>
+	</class>
+
+	<class name="works.tonny.apps.user.model.UserProperties" table="u_user_info">
+		<id name="id" type="string">
+			<column name="USER_ID" length="32" />
+			<generator class="assigned" />
+		</id>
+		<many-to-one name="position" class="works.tonny.apps.user.model.Position"
+			fetch="select">
+			<column name="POSITION_ID" length="32" />
+		</many-to-one>
+		<many-to-one name="title" class="works.tonny.apps.user.model.Title"
+			fetch="select">
+			<column name="TITLE_ID" length="32" />
+		</many-to-one>
+		<set name="positions" table="u_user_position" inverse="false"
+			lazy="true" fetch="select">
+			<key>
+				<column name="USER_ID" length="32" not-null="true" />
+			</key>
+			<many-to-many entity-name="works.tonny.apps.user.model.Position">
+				<column name="POSITION_ID" length="32" not-null="true" />
+			</many-to-many>
+		</set>
+	</class>
+
+	<class name="works.tonny.apps.user.model.UserPosition" table="u_user_position">
+		<composite-id name="id" class="works.tonny.apps.user.model.UserPositionID">
+			<key-many-to-one name="position" class="works.tonny.apps.user.model.Position">
+				<column name="POSITION_ID" length="32" />
+			</key-many-to-one>
+			<key-many-to-one name="user" class="works.tonny.apps.user.User">
+				<column name="USER_ID" length="32" />
+			</key-many-to-one>
+		</composite-id>
+	</class>
+
+
+</hibernate-mapping>

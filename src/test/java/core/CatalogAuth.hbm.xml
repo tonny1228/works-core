@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="works.tonny.apps.core">
+	<class name="CatalogAuth" table="cms_catalog_auth">
+		<id name="id" type="java.lang.String" column="id">
+			<generator class="uuid"></generator>
+		</id>
+		<!-- 
+		<many-to-one name="position" class="works.tonny.apps.user.Position"
+			lazy="false" not-found="ignore">
+			<column name="position_id"></column>
+		</many-to-one>
+		 -->
+		<many-to-one name="role" class="works.tonny.apps.user.Role"
+			lazy="false" not-found="ignore">
+			<column name="role_id"></column>
+		</many-to-one>
+		<many-to-one name="catalog" class="works.tonny.apps.core.Catalog" lazy="false" not-found="ignore">
+			<column name="catalog_id"></column>
+		</many-to-one>
+
+		<property name="catalogLayer" column="catalog_layer" />
+		<property name="extend" />
+		<property name="read" column="READING" />
+		<property name="edit" />
+		<property name="verify" />
+		<property name="remove" />
+		<property name="updateTime" type="java.sql.Timestamp" column="update_time" />
+		<property name="operator" />
+	</class>
+</hibernate-mapping>

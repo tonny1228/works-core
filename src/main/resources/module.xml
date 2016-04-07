@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<id>core</id>
+	<handler>works.tonny.apps.deploy.DefaultModuleInstallHandler</handler>
+	<name>基础组件</name>
+	<desc>提供系统运行框架、用户管理、权限验证、分类管理、动态表单管理、附件管理等功能</desc>
+	<version>project_version</version>
+	<page>
+		<admin-menu>/apps/core_menu.jsp</admin-menu>
+		<admin-menu>/apps/user_menu.jsp</admin-menu>
+	</page>
+	<resource>
+		<sqlmapping>config/SQLMapping-core.xml</sqlmapping>
+		<sqlmapping>config/SQLMapping-user.xml</sqlmapping>
+		<struts>config/struts-core.xml</struts>
+		<struts>config/struts-user.xml</struts>
+		<struts>config/struts-userevent.xml</struts>
+		<db-mysql>sql/core.mysql.sql</db-mysql>
+		<db-mysql>sql/user.mysql.sql</db-mysql>
+		<db-mysql-init>sql/user.mysql.init.sql</db-mysql-init>
+		<db-oracle>sql/core.oracle.sql</db-oracle>
+		<db-oracle>sql/user.oracle.sql</db-oracle>
+		<db-oracle-init>sql/user.oracle.init.sql</db-oracle-init>
+		<db-sqlserver>sql/core.sqlserver.sql</db-sqlserver>
+		<db-sqlserver>sql/user.sqlserver.sql</db-sqlserver>
+	</resource>
+	<settings name="用户信息配置">
+		<setting url="/user/me.action" auth="user.me">修改我的信息</setting>
+		<setting url="/apps/admin_logout.jsp">退出</setting>
+	</settings>
+</module>

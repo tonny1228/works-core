@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="works.tonny.apps.core">
+	<class name="Catalog" table="s_catalog" dynamic-update="true">
+		<id name="id" column="id">
+			<generator class="assigned" />
+		</id>
+		<property name="name" />
+		<property name="alias" />
+		<property name="layer" />
+		<property name="nameLayer" column="name_layer" length="400" />
+		<property name="orderNo" column="order_no" length="15" />
+		<property name="parentId" column="parent_id" />
+		<property name="description"
+			type="org.springframework.orm.hibernate3.support.ClobStringType"
+			lazy="true" />
+		<property name="status" />
+		<property name="display" />
+		<property name="type" />
+		<property name="updateTime" type="timestamp" column="update_time" />
+		<property name="admin" />
+	</class>
+</hibernate-mapping>
