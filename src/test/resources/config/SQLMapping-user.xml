@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+<sql-mapping>
+	<package name="SystemResource">
+		<query name="list">
+			<sql>
+                <mysql>from SystemResource d order by	concat(ifnull(d.parent.id,''),id),d.packageName,d.api</mysql>
+                <oracle>from SystemResource d order by	concat(nvl(d.parent.id,''),id),d.packageName,d.api</oracle>
+			</sql>
+		</query>
+	</package>
+
+	<!-- package name="Department"> <query name="list"> <sql> from Department 
+		d </sql> <appender name="root"> where length(d.parentId)=0 or d.parentId 
+		is null </appender> <appender name="order">order by d.idLayer,d.orderNo</appender> 
+		</query> <query name="orderNo"> <sql> select max(d.orderNo) from Department 
+		d </sql> <appender name="root"> where length(d.parentId)=0 or d.parentId 
+		is null </appender> <appender name="sub"> where d.parentId =? </appender> 
+		</query> </package -->
+	<package name="Position">
+		<query name="orderNo">
+			<sql>
+				select max(p.orderNo) from Position p where p.department.id =?
+			</sql>
+
+		</query>
+		<query name="userlist">
+			<sql>
+				select p.id.user from UserPosition p where p.id.position.id =?
+
+			</sql>
+			<appender name="username">
+				and p.id.user.username =?
+			</appender>
+			<appender name="name">
+				and p.id.user.name like	concat('%',concat(?,'%'))
+			</appender>
+			<appender name="order">
+				order by p.id.user.name
+			</appender>
+		</query>
+		<query name="deptuserlist">
+			<sql>
+				select p.id.user from UserPosition p,Department d where	p.id.position.department.id = d.id and d.id=?
+			</sql>
+			<appender name="username">
+				and p.id.user.username =?
+			</appender>
+			<appender name="name">
+				and p.id.user.name like	concat('%',concat(?,'%'))
+			</appender>
+			<appender name="order">
+				order by p.id.position.jobLevel.level
+				desc
+			</appender>
+		</query>
+	</package>
+	<package name="User">
+		<query name="query">
+			<sql>
+				from User u where 1=1
+			</sql>
+			<appender name="username">
+				and u.username =:username
+			</appender>
+			<appender name="name">
+				and u.name like	concat('%',concat(:name,'%'))
+			</appender>
+			<appender name="email">
+				and u.email =:email
+			</appender>
+			<appender name="id">
+				and u.id =:id
+			</appender>
+			<appender name="sex">
+				and u.sex =:sex
+			</appender>
+			<appender name="status">
+				and u.status =:status
+			</appender>
+			<appender name="mobileNo">
+				and u.mobileNo =:mobileNo
+			</appender>
+			<appender name="position">
+				and u.position.id =:position
+			</appender>
+			<appender name="department">
+				and u.position.department.id =:department
+			</appender>
+			<appender name="departmentLike">
+				and u.position.department.treeNode.idLayer like concat('%',concat(:department,'%'))
+			</appender>
+			<appender name="role">
+				and :roleId in elements(u.roles)
+			</appender>
+			<appender name="orderByNameASC">
+				order by u.name
+			</appender>
+			<appender name="orderByNameDESC">
+				order by u.name desc
+			</appender>
+			<appender name="orderByUsernameASC">
+				order by u.username
+			</appender>
+			<appender name="orderByUsernameDESC">
+				order by u.username desc
+			</appender>
+			<appender name="orderByOrderNoASC">
+				order by u.orderNo
+			</appender>
+			<appender name="orderByOrderNoDESC">
+				order by u.orderNo desc
+			</appender>
+		</query>
+		<query name="userinfoquery">
+			<sql>
+				from UserInfo u where 1=1
+			</sql>
+			<appender name="username">
+				and u.username =:username
+			</appender>
+			<appender name="name">
+				and u.name like	concat('%',concat(:name,'%'))
+			</appender>
+			<appender name="email">
+				and u.email =:email
+			</appender>
+			<appender name="id">
+				and u.id =:id
+			</appender>
+			<appender name="sex">
+				and u.sex =:sex
+			</appender>
+			<appender name="status">
+				and u.status =:status
+			</appender>
+			<appender name="mobileNo">
+				and u.mobileNo =:mobileNo
+			</appender>
+			<appender name="position">
+				and u.position.id =:position
+			</appender>
+			<appender name="department">
+				and u.position.department.id =:department
+			</appender>
+			<appender name="departmentLike">
+				and u.position.department.treeNode.idLayer like concat('%',concat(:department,'%'))
+			</appender>
+			<appender name="jobLevelName">
+				and u.position.jobLevel.name=:jobLevelName
+			</appender>
+			<appender name="jobName">
+                and u.position.jobLevel.job.name=:jobName
+			</appender>
+			<appender name="role">
+				and :roleId in elements(u.roles)
+			</appender>
+			<appender name="orderByNameASC">
+				order by u.name
+			</appender>
+			<appender name="orderByNameDESC">
+				order by u.name desc
+			</appender>
+			<appender name="orderByUsernameASC">
+				order by u.username
+			</appender>
+			<appender name="orderByUsernameDESC">
+				order by u.username desc
+			</appender>
+			<appender name="orderByOrderNoASC">
+				order by u.orderNo
+			</appender>
+			<appender name="orderByOrderNoDESC">
+				order by u.orderNo desc
+			</appender>
+		</query>
+	</package>
+	<package name="Member">
+		<query name="query">
+			<sql>
+				from Member m where 1=1
+			</sql>
+			<appender name="username">
+				and m.username =?
+			</appender>
+			<appender name="name">
+				and m.name like
+				concat('%',concat(?,'%'))
+			</appender>
+			<appender name="email">
+				and m.email like
+				concat('%',concat(?,'%'))
+			</appender>
+			<appender name="userId">
+				and m.userId =?
+			</appender>
+			<appender name="order">
+				order by m.name
+			</appender>
+		</query>
+	</package>
+
+	<!-- <package name=""> <query name=""> <sql></sql> <appender name="or">or</appender> 
+		</query> </package> -->
+</sql-mapping>
