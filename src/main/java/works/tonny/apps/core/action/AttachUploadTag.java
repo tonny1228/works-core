@@ -53,7 +53,7 @@ public class AttachUploadTag extends CommonTag {
 		HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
 		try {
 			String container = (String) request.getAttribute("_att_container");
-			if (container == null) {
+            if (container == null || (StringUtils.isNotEmpty(catalog) && !container.contains(catalog))) {
 				container = "_att_files_" + objectId + "_" + StringUtils.replaceChars(catalog, ".", "_");
 			}
 			StringBuffer bodyContent = new StringBuffer();

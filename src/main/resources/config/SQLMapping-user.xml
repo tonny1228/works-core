@@ -80,6 +80,9 @@
 			<appender name="mobileNo">
 				and u.mobileNo =:mobileNo
 			</appender>
+			<appender name="createUser">
+				and u.createUser =:createUser
+			</appender>
 			<appender name="position">
 				and u.position.id =:position
 			</appender>
@@ -136,6 +139,9 @@
 			<appender name="mobileNo">
 				and u.mobileNo =:mobileNo
 			</appender>
+            <appender name="createUser">
+                and u.createUser =:createUser
+            </appender>
 			<appender name="position">
 				and u.position.id =:position
 			</appender>

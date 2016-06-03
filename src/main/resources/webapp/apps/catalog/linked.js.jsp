@@ -4,7 +4,7 @@
 <%@ taglib uri="/apps-core" prefix="core"%>
 var _${param.id }=[];
 var _${param.id }Map=[];
-<core:catalog parentId="${param.id }" name="sheng" type="0" depth="${param.depth }">
+<core:catalog parentId="${param.id }" name="sheng" type="${param.type }" depth="${param.depth }">
 var j = _${param.id }.length;
 
 var item ={name:'${sheng.name }',id:'${sheng.id }',parent:'${sheng.treeNode.parentId}',subs:[]};

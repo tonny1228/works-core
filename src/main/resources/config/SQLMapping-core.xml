@@ -33,6 +33,8 @@
             <appender name="type">and d.type=:type</appender>
             <appender name="id">and d.id=:id</appender>
             <appender name="orderNo"> order by n.orderNo</appender>
+            <appender name="orderIdLayer"> order by n.idLayer, n.orderNo</appender>
+            <appender name="orderIdLayerDesc"> order by  n.idLayer desc, n.orderNo desc</appender>
         </query>
     </package>
     <package name="CatalogAuth">

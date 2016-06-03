@@ -57,6 +57,11 @@ public class UserQueryImpl extends AbstractCriteriaQuery<UserQuery, User> implem
     private String jobLevelName;
 
     /**
+     * 创建用户登录名
+     */
+    private String createUser;
+
+    /**
      *
      */
     public UserQueryImpl(BaseDAOSupport<User> dao) {
@@ -97,6 +102,7 @@ public class UserQueryImpl extends AbstractCriteriaQuery<UserQuery, User> implem
         addParameter(telNo != null, "telNo", new String[]{"telNo"}, new Object[]{telNo});
         addParameter(status != null, "status", new String[]{"status"}, new Object[]{String.valueOf(status)});
         addParameter(mobileNo != null, "mobileNo", new String[]{"mobileNo"}, new Object[]{mobileNo});
+        addParameter(createUser != null, "createUser", new String[]{"createUser"}, new Object[]{createUser});
         addParameter(positionId != null, "position", new String[]{"position"}, new Object[]{positionId});
         addParameter(departmentId != null, "department", new String[]{"department"}, new Object[]{departmentId});
         addParameter(departmentIdLike != null, "departmentLike", new String[]{"department"}, new Object[]{departmentIdLike});
@@ -223,6 +229,12 @@ public class UserQueryImpl extends AbstractCriteriaQuery<UserQuery, User> implem
     @Override
     public UserQuery role(String roleId) {
         this.roleId = roleId;
+        return this;
+    }
+
+    @Override
+    public UserQuery createUser(String createUser) {
+        this.createUser = createUser;
         return this;
     }
 

@@ -1,13 +1,11 @@
 package works.tonny.apps.user.web;
 
-import java.util.List;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.llama.library.cryptography.Encryptable;
 import org.llama.library.utils.PagedList;
 import org.llama.library.utils.PropertiesUtils;
-
+import works.tonny.apps.Query;
 import works.tonny.apps.exception.AuthException;
 import works.tonny.apps.exception.DataException;
 import works.tonny.apps.user.AuthedAction;
@@ -18,6 +16,8 @@ import works.tonny.apps.user.service.AuthEntityService;
 import works.tonny.apps.user.service.RoleEntityService;
 import works.tonny.apps.user.service.TitleService;
 import works.tonny.apps.user.service.UserEntityService;
+
+import java.util.List;
 
 public class UserAction extends AuthedAction {
 
@@ -65,6 +65,17 @@ public class UserAction extends AuthedAction {
         }
         return SUCCESS;
     }
+
+
+    public String subList() {
+        PagedList<User> users = userService.createUserQuery().createUser(loginedUser().getUser().getUsername()).orderByName(Query.Direction.ASC).listRange(getOffset(), getLimit());
+        request.setAttribute("list", users);
+        if (StringUtils.isNotEmpty(forward)) {
+            return "forward";
+        }
+        return SUCCESS;
+    }
+
 
     /**
      * 用户列表与查询用户
@@ -196,8 +207,8 @@ public class UserAction extends AuthedAction {
      */
     public String editMine() {
         userService.updateMine(user);
-        PropertiesUtils.copyProperties(loginedUser().getUser(), user, new String[] { "name", "email", "info",
-                "birthday", "telNo", "mobileNo", "email", "address", "zip", "sex" });
+        PropertiesUtils.copyProperties(loginedUser().getUser(), user, new String[]{"name", "email", "info",
+                "birthday", "telNo", "mobileNo", "email", "address", "zip", "sex"});
         return SUCCESS;
     }
 
@@ -234,6 +245,12 @@ public class UserAction extends AuthedAction {
         return SUCCESS;
     }
 
+
+    public String saveSubUser(){
+        user.setCreateUser(loginedUser().getUser().getUsername());
+        return save();
+    }
+
     /**
      * 编辑用户
      *
@@ -243,8 +260,8 @@ public class UserAction extends AuthedAction {
         if (user != null && StringUtils.isNotBlank(user.getId())) {
             userService.update(user);
             if (user.getId().equals(loginedUser().getUser().getId())) {
-                PropertiesUtils.copyProperties(loginedUser().getUser(), user, new String[] { "name", "email", "info",
-                        "birthday", "telNo", "mobileNo", "email", "address", "zip", "sex" });
+                PropertiesUtils.copyProperties(loginedUser().getUser(), user, new String[]{"name", "email", "info",
+                        "birthday", "telNo", "mobileNo", "email", "address", "zip", "sex"});
                 return "me";
             }
         } else if (StringUtils.isNotEmpty(positionId)) {
@@ -293,8 +310,8 @@ public class UserAction extends AuthedAction {
     /**
      * 锁定用户
      *
-     * @Title: lock
      * @return
+     * @Title: lock
      * @date 2011-11-30 下午5:08:42
      * @author tonny
      * @version 1.0
@@ -307,8 +324,8 @@ public class UserAction extends AuthedAction {
     /**
      * 解锁用户
      *
-     * @Title: lock
      * @return
+     * @Title: lock
      * @date 2011-11-30 下午5:08:42
      * @author tonny
      * @version 1.0

@@ -70,7 +70,15 @@ public class CatalogQueryImpl extends AbstractCriteriaQuery<CatalogQuery, Catalo
         addParameter(display != null, "display", new String[]{"display"}, new Object[]{display});
         addParameter(type != null, "type", new String[]{"type"}, new Object[]{type});
 
-        addParameter(order.contains("orderNo ASC"), "orderNo", new String[]{}, new Object[]{});
+
+        if (order.contains("treeNode.idLayer ASC"))
+            addParameter(order.contains("treeNode.idLayer ASC"), "orderIdLayer", new String[]{}, new Object[]{});
+        else if (order.contains("treeNode.idLayer DESC"))
+            addParameter(order.contains("treeNode.idLayer DESC"), "orderIdLayerDesc", new String[]{}, new Object[]{});
+        else
+            addParameter(order.contains("treeNode.orderNo ASC"), "orderNo", new String[]{}, new Object[]{});
+
+
 
         //        addParameter(parentId, "treeNode.parentId", ListSupport.MUST, ListSupport.EQUALS);
         //        addParameter(name, "name", ListSupport.MUST, ListSupport.EQUALS);

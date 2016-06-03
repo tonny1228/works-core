@@ -23,10 +23,10 @@ public class TestCluster extends AbstractJUnit4SpringContextTests {
 
     @org.junit.Test
     public void test() throws IOException {
-        ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(new File("g:\\temp\\1")));
-        LoginedUser user = authService.login("admin", "1");
-        System.out.println(user);
-        os.writeObject(user);
-        os.close();
+//        ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(new File("g:\\temp\\1")));
+//        LoginedUser user = authService.login("admin", "1");
+//        System.out.println(user);
+//        os.writeObject(user);
+//        os.close();
     }
 }

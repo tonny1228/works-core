@@ -83,6 +83,7 @@
 			<result name="success">/apps/user/userList.jsp</result>
 			<result name="forward">${forward}</result>
 		</action>
+
 		<action name="sysUsers" class="userAction" method="sysUsers">
 			<result name="success">/apps/user/sysUsers.jsp</result>
 		</action>
@@ -95,6 +96,7 @@
 		<action name="addUser" class="userAction" method="add">
 			<result>/apps/user/userAdd.jsp</result>
 		</action>
+
 		<action name="checkUser" class="userAction" method="check">
 			<result>/apps/user/user_check.jsp</result>
 		</action>
@@ -126,6 +128,7 @@
 			<result name="me" type="redirect">me.action?_tips=tip_save_success
 			</result>
 		</action>
+
 		<action name="updateUserinfo" class="userAction" method="updateUserinfo">
 			<result type="redirect">editUser.action?id=${id}&amp;_tips=tip_save_success
 			</result>
@@ -147,6 +150,24 @@
 			</result>
 		</action>
 
+
+
+        <action name="subList" class="userAction" method="subList">
+            <result name="success">/apps/user/subUserList.jsp</result>
+            <result name="forward">${forward}</result>
+        </action>
+        <action name="addSubUser" class="userAction" method="add">
+            <result>/apps/user/subUserAdd.jsp</result>
+        </action>
+        <action name="saveSubUser" class="userAction" method="saveSubUser">
+            <result type="redirect">editSubUser.action?id=${user.id}&amp;_tips=tip_save_success
+            </result>
+            <result name="me" type="redirect">me.action?_tips=tip_save_success
+            </result>
+        </action>
+        <action name="editSubUser" class="userAction" method="edit">
+            <result>/apps/user/subUserEdit.jsp</result>
+        </action>
 		<!-- 部门管理 -->
 		<action name="orgnization">
 			<result name="success">/apps/user/orgnization.jsp</result>

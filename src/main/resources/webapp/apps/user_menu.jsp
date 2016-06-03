@@ -21,4 +21,5 @@
     <t:authCheck auth="user.list">
 	subMenu['__userm'][subMenu['__userm'].length]={id:"__sysuser",name:"系统用户",link:"/user/sysUsers.action"};
     </t:authCheck>
+    subMenu['__userm'][subMenu['__userm'].length]={id:"__subuser",name:"子用户管理",link:"/user/subList.action"};
 </t:menu>

@@ -72,6 +72,14 @@ public interface UserQuery extends Query<UserQuery, User> {
     UserQuery email(String email);
 
     /**
+     * 创建用户等于
+     *
+     * @param createUser
+     * @return
+     */
+    UserQuery createUser(String createUser);
+
+    /**
      * 性别等于
      *
      * @param sex

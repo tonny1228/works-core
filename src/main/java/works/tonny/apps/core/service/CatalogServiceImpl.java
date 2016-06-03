@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.llama.library.utils.Assert;
 import org.llama.library.utils.PropertiesUtils;
 import org.springframework.transaction.annotation.Transactional;
+import works.tonny.apps.Query;
 import works.tonny.apps.core.*;
 import works.tonny.apps.core.dao.CatalogDAO;
 import works.tonny.apps.exception.DataException;
@@ -400,15 +401,15 @@ public class CatalogServiceImpl extends AuthedAbstractService implements Catalog
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     public List<Catalog> listSubs(String id, int type, int depth) {
         Catalog catalog = get(id);
-        if (depth <= 0) {
-            return createQuery().idLayerLike(catalog.getTreeNode().getIdLayer()).type(type).list();
-            //            return catalogDAO.listSubsByLayer(catalog.getTreeNode().getIdLayer(), type);
-        } else {
-            return createQuery().idLayerLike(catalog.getTreeNode().getIdLayer()).depthGreateThan(catalog.getTreeNode().getDepth()).depthLessThan(depth + 1).type(type).list();
-            //            return catalogDAO.listSubsByLayer(catalog.getTreeNode().getIdLayer(), new Integer[]{
-            //                    catalog.getTreeNode().getDepth(), depth}, type);
+        CatalogQuery catalogQuery = createQuery().idLayerLike(catalog.getTreeNode().getIdLayer());
+        if (type > -1) {
+            catalogQuery.type(type);
         }
 
+        if (depth > -1) {
+            catalogQuery.depthGreateThan(catalog.getTreeNode().getDepth()).depthLessThan(depth + 1);
+        }
+        return catalogQuery.orderByIdLayer(Query.Direction.ASC).list();
     }
 
     /**
