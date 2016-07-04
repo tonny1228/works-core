@@ -25,7 +25,7 @@ addOnLoad(function(){
 </script>
 </t:fragment>
 
-<t:tpl menuId="__subuser">
+<t:tpl menuId="__buuser">
 	<s:form action="userList" namespace="/user/sub" method="get">
 	<div class="form-search ui-corner-all">
 		用户名: <s:textfield name="username" value="%{#parameters.username}"/>

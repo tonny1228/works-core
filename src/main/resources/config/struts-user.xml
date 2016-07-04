@@ -1,420 +1,440 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE struts PUBLIC
-	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-	"http://struts.apache.org/dtds/struts-2.0.dtd">
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
-	<package name="login" extends="default" namespace="/user">
-		<global-results>
-			<result name="main" type="redirect">/apps/admin_main.jsp</result>
-		</global-results>
-		<action name="login" class="loginAction" method="login">
-			<result name="forward" type="redirect">${url}</result>
-			<result name="login">/apps/admin_login.jsp</result>
-		</action>
-		<action name="logout" class="loginAction" method="logout">
-			<result name="forward" type="redirect">${url}</result>
-			<result name="success" type="redirect">login.action?url=${url}</result>
-		</action>
-	</package>
+    <package name="login" extends="default" namespace="/user">
+        <global-results>
+            <result name="main" type="redirect">/apps/admin_main.jsp</result>
+        </global-results>
+        <action name="login" class="loginAction" method="login">
+            <result name="forward" type="redirect">${url}</result>
+            <result name="login">/apps/admin_login.jsp</result>
+        </action>
+        <action name="logout" class="loginAction" method="logout">
+            <result name="forward" type="redirect">${url}</result>
+            <result name="success" type="redirect">login.action?url=${url}</result>
+        </action>
+    </package>
 
-	<package name="user" extends="authed" namespace="/user">
-		<global-results>
-			<result name="success">/apps/user/admin_main.jsp</result>
-		</global-results>
-		<action name="listSystemResource" class="systemResourceAction"
-			method="list">
-			<result name="success">/apps/auth/systemResourceList.jsp</result>
-		</action>
+    <package name="user" extends="authed" namespace="/user">
+        <global-results>
+            <result name="success">/apps/user/admin_main.jsp</result>
+        </global-results>
+        <action name="listSystemResource" class="systemResourceAction"
+                method="list">
+            <result name="success">/apps/auth/systemResourceList.jsp</result>
+        </action>
 
-		<action name="addSystemResource" class="systemResourceAction"
-			method="add">
-			<result name="success">/apps/auth/systemResourceAdd.jsp</result>
-		</action>
-		<action name="saveSystemResource" class="systemResourceAction"
-			method="save">
-			<result name="input">/apps/auth/systemResourceAdd.jsp</result>
-			<result name="success" type="redirect">/user/listSystemResource.action?_tips=tip_save_success
-			</result>
-			<result name="parent" type="redirect">/user/editSystemResource.action?id=${resource.parent.id}
-			</result>
-		</action>
-		<action name="updateSystemResource" class="systemResourceAction"
-			method="update">
-			<result name="input">/apps/auth/systemResourceAdd.jsp</result>
-			<result name="success" type="redirect">/user/listSystemResource.action?_tips=tip_save_success
-			</result>
-			<result name="parent" type="redirect">/user/editSystemResource.action?id=${resource.parent.id}
-			</result>
-		</action>
-		<action name="editSystemResource" class="systemResourceAction"
-			method="edit">
-			<result name="input">/apps/auth/systemResourceEdit.jsp</result>
-			<result name="success">/apps/auth/systemResourceEdit.jsp</result>
-		</action>
-		<action name="deleteSystemResource" class="systemResourceAction"
-			method="delete">
-			<result type="redirect">listSystemResource.action?_tips=tip_delete_success
-			</result>
-			<result name="parent" type="redirect">/user/editSystemResource.action?id=${id}
-			</result>
-		</action>
+        <action name="addSystemResource" class="systemResourceAction"
+                method="add">
+            <result name="success">/apps/auth/systemResourceAdd.jsp</result>
+        </action>
+        <action name="saveSystemResource" class="systemResourceAction"
+                method="save">
+            <result name="input">/apps/auth/systemResourceAdd.jsp</result>
+            <result name="success" type="redirect">/user/listSystemResource.action?_tips=tip_save_success
+            </result>
+            <result name="parent" type="redirect">/user/editSystemResource.action?id=${resource.parent.id}
+            </result>
+        </action>
+        <action name="updateSystemResource" class="systemResourceAction"
+                method="update">
+            <result name="input">/apps/auth/systemResourceAdd.jsp</result>
+            <result name="success" type="redirect">/user/listSystemResource.action?_tips=tip_save_success
+            </result>
+            <result name="parent" type="redirect">/user/editSystemResource.action?id=${resource.parent.id}
+            </result>
+        </action>
+        <action name="editSystemResource" class="systemResourceAction"
+                method="edit">
+            <result name="input">/apps/auth/systemResourceEdit.jsp</result>
+            <result name="success">/apps/auth/systemResourceEdit.jsp</result>
+        </action>
+        <action name="deleteSystemResource" class="systemResourceAction"
+                method="delete">
+            <result type="redirect">listSystemResource.action?_tips=tip_delete_success
+            </result>
+            <result name="parent" type="redirect">/user/editSystemResource.action?id=${id}
+            </result>
+        </action>
 
-		<action name="listPrivilege" class="privilegeAction" method="list">
-			<result name="success">/apps/auth/privilegeList.jsp</result>
-		</action>
+        <action name="listPrivilege" class="privilegeAction" method="list">
+            <result name="success">/apps/auth/privilegeList.jsp</result>
+        </action>
 
-		<action name="addPrivilege" class="privilegeAction" method="add">
-			<result name="success">/apps/auth/privilegeAdd.jsp</result>
-		</action>
-		<action name="editPrivilege" class="privilegeAction" method="edit">
-			<result name="success">/apps/auth/privilegeEdit.jsp</result>
-		</action>
-		<action name="deletePrivilege" class="privilegeAction" method="delete">
-			<result type="redirect">listPrivilege.action?_tips=tip_delete_success
-			</result>
-		</action>
+        <action name="addPrivilege" class="privilegeAction" method="add">
+            <result name="success">/apps/auth/privilegeAdd.jsp</result>
+        </action>
+        <action name="editPrivilege" class="privilegeAction" method="edit">
+            <result name="success">/apps/auth/privilegeEdit.jsp</result>
+        </action>
+        <action name="deletePrivilege" class="privilegeAction" method="delete">
+            <result type="redirect">listPrivilege.action?_tips=tip_delete_success
+            </result>
+        </action>
 
-		<action name="savePrivilege" class="privilegeAction" method="save">
-			<result type="redirect">editPrivilege.action?id=${id}&amp;_tips=tip_save_success
-			</result>
-		</action>
-		<!-- 用户管理 -->
-		<action name="userList" class="userAction" method="list">
-			<result name="success">/apps/user/userList.jsp</result>
-			<result name="forward">${forward}</result>
-		</action>
-
-		<action name="sysUsers" class="userAction" method="sysUsers">
-			<result name="success">/apps/user/sysUsers.jsp</result>
-		</action>
-		<action name="positionUserList" class="userAction" method="positionList">
-			<result name="success">/apps/user/positionUserList.jsp</result>
-		</action>
-		<action name="departmentList" class="userAction" method="departmentList">
-			<result name="success">/apps/user/departmentUserList.jsp</result>
-		</action>
-		<action name="addUser" class="userAction" method="add">
-			<result>/apps/user/userAdd.jsp</result>
-		</action>
-
-		<action name="checkUser" class="userAction" method="check">
-			<result>/apps/user/user_check.jsp</result>
-		</action>
-		
-		<action name="editUser" class="userAction" method="edit">
-			<result>/apps/user/userEdit.jsp</result>
-		</action>
-		<action name="resetPassword" class="userAction" method="resetPassword">
-			<result type="redirect">editUser.action?id=${id}&amp;_tips=tip_save_success
-			</result>
-		</action>
-		<action name="editUserinfo" class="userAction" method="editUserinfo">
-			<result>/apps/user/userEditinfo.jsp</result>
-		</action>
-		<action name="me" class="userAction" method="me">
-			<result>/apps/user/me.jsp</result>
-		</action>
-		<action name="editMyPassword">
-			<result>/apps/user/user_password.jsp</result>
-		</action>
-		<action name="updateMyPassword" class="userAction" method="updateMyPassword">
-		</action>
-		<action name="editMine" class="userAction" method="editMine">
-			<result type="redirect">me.action?_tips=tip_save_success</result>
-		</action>
-		<action name="saveUser" class="userAction" method="save">
-			<result type="redirect">editUser.action?id=${user.id}&amp;_tips=tip_save_success
-			</result>
-			<result name="me" type="redirect">me.action?_tips=tip_save_success
-			</result>
-		</action>
-
-		<action name="updateUserinfo" class="userAction" method="updateUserinfo">
-			<result type="redirect">editUser.action?id=${id}&amp;_tips=tip_save_success
-			</result>
-		</action>
-		<action name="lockUser" class="userAction" method="lock">
-			<result type="redirect">editUser.action?id=${id}&amp;_tips=tip_lock_success
-			</result>
-		</action>
-		<action name="unlockUser" class="userAction" method="unlock">
-			<result type="redirect">editUser.action?id=${id}&amp;_tips=tip_unlock_success
-			</result>
-		</action>
-		<action name="deleteUser" class="userAction" method="delete">
-			<result type="redirect">${forward}&amp;_tips=tip_delete_success</result>
-		</action>
-		<action name="deleteUserOfPosition" class="userAction"
-			method="deleteUserOfPosition">
-			<result type="redirect">positionUserList.action?positionId=${positionId}&amp;_tips=tip_delete_success
-			</result>
-		</action>
-
-
-
-        <action name="subList" class="userAction" method="subList">
-            <result name="success">/apps/user/subUserList.jsp</result>
+        <action name="savePrivilege" class="privilegeAction" method="save">
+            <result type="redirect">editPrivilege.action?id=${id}&amp;_tips=tip_save_success
+            </result>
+        </action>
+        <!-- 用户管理 -->
+        <action name="userList" class="userAction" method="list">
+            <result name="success">/apps/user/userList.jsp</result>
             <result name="forward">${forward}</result>
         </action>
-        <action name="addSubUser" class="userAction" method="add">
-            <result>/apps/user/subUserAdd.jsp</result>
+
+        <action name="sysUsers" class="userAction" method="sysUsers">
+            <result name="success">/apps/user/sysUsers.jsp</result>
         </action>
-        <action name="saveSubUser" class="userAction" method="saveSubUser">
-            <result type="redirect">editSubUser.action?id=${user.id}&amp;_tips=tip_save_success
+        <action name="positionUserList" class="userAction" method="positionList">
+            <result name="success">/apps/user/positionUserList.jsp</result>
+        </action>
+        <action name="departmentList" class="userAction" method="departmentList">
+            <result name="success">/apps/user/departmentUserList.jsp</result>
+        </action>
+        <action name="addUser" class="userAction" method="add">
+            <result>/apps/user/userAdd.jsp</result>
+        </action>
+
+        <action name="checkUser" class="userAction" method="check">
+            <result>/apps/user/user_check.jsp</result>
+        </action>
+
+        <action name="editUser" class="userAction" method="edit">
+            <result>/apps/user/userEdit.jsp</result>
+        </action>
+        <action name="resetPassword" class="userAction" method="resetPassword">
+            <result type="redirect">editUser.action?id=${id}&amp;_tips=tip_save_success
+            </result>
+        </action>
+        <action name="editUserinfo" class="userAction" method="editUserinfo">
+            <result>/apps/user/userEditinfo.jsp</result>
+        </action>
+        <action name="me" class="userAction" method="me">
+            <result>/apps/user/me.jsp</result>
+        </action>
+        <action name="editMyPassword">
+            <result>/apps/user/user_password.jsp</result>
+        </action>
+        <action name="updateMyPassword" class="userAction" method="updateMyPassword">
+        </action>
+        <action name="editMine" class="userAction" method="editMine">
+            <result type="redirect">me.action?_tips=tip_save_success</result>
+        </action>
+        <action name="saveUser" class="userAction" method="save">
+            <result type="redirect">editUser.action?id=${user.id}&amp;_tips=tip_save_success
             </result>
             <result name="me" type="redirect">me.action?_tips=tip_save_success
             </result>
         </action>
-        <action name="editSubUser" class="userAction" method="edit">
+
+        <action name="updateUserinfo" class="userAction" method="updateUserinfo">
+            <result type="redirect">editUser.action?id=${id}&amp;_tips=tip_save_success
+            </result>
+        </action>
+        <action name="lockUser" class="userAction" method="lock">
+            <result type="redirect">editUser.action?id=${id}&amp;_tips=tip_lock_success
+            </result>
+        </action>
+        <action name="unlockUser" class="userAction" method="unlock">
+            <result type="redirect">editUser.action?id=${id}&amp;_tips=tip_unlock_success
+            </result>
+        </action>
+        <action name="deleteUser" class="userAction" method="delete">
+            <result type="redirect">${forward}&amp;_tips=tip_delete_success</result>
+        </action>
+        <action name="deleteUserOfPosition" class="userAction"
+                method="deleteUserOfPosition">
+            <result type="redirect">positionUserList.action?positionId=${positionId}&amp;_tips=tip_delete_success
+            </result>
+        </action>
+
+
+        <!-- 部门管理 -->
+        <action name="orgnization">
+            <result name="success">/apps/user/orgnization.jsp</result>
+        </action>
+        <action name="tree" class="departmentAction" method="tree">
+            <result name="success">/apps/user/tree.jsp</result>
+            <result name="userlist" type="redirect">userList.action?select=${select}&amp;callback=${callback}&amp;forward=/apps/user/tree_user.jsp
+            </result>
+        </action>
+        <action name="listUser" class="departmentAction" method="listUser">
+            <result name="success">/apps/user/listUser_json.jsp</result>
+        </action>
+        <action name="department" class="departmentAction" method="root">
+            <result name="success">/apps/user/root.jsp</result>
+        </action>
+        <action name="addDepartment" class="departmentAction" method="add">
+            <result>/apps/user/department_add.jsp</result>
+        </action>
+        <action name="editDepartment" class="departmentAction" method="edit">
+            <result>/apps/user/department_edit.jsp</result>
+        </action>
+        <action name="saveDepartment" class="departmentAction" method="update">
+            <result name="input">
+                /user/editDepartment.action?id=${department.id}
+            </result>
+            <result type="redirect">${forward}&amp;_tips=tip_save_success</result>
+        </action>
+        <action name="deleteDepartment" class="departmentAction"
+                method="delete">
+            <result type="redirect">${forward}&amp;_tips=tip_delete_success</result>
+        </action>
+        <action name="moveDepartment" class="departmentAction" method="move">
+            <result type="redirect">${forward}&amp;_tips=tip_save_success</result>
+        </action>
+
+
+        <!-- 职称管理 -->
+        <action name="addTitle" class="titleAction" method="add">
+            <result>/apps/user/title_add.jsp</result>
+        </action>
+        <action name="saveTitle" class="titleAction" method="save">
+            <result type="redirect">listTitle.action?_tips=tip_save_success</result>
+        </action>
+        <action name="editTitle" class="titleAction" method="edit">
+            <result>/apps/user/title_edit.jsp</result>
+        </action>
+        <action name="updateTitle" class="titleAction" method="update">
+            <result type="redirect">listTitle.action?_tips=tip_save_success</result>
+        </action>
+        <action name="listTitle" class="titleAction" method="list">
+            <result>/apps/user/title_list.jsp</result>
+        </action>
+        <action name="deleteTitle" class="titleAction" method="delete">
+            <result type="redirect">listTitle.action?_tips=tip_delete_success
+            </result>
+        </action>
+
+        <!-- 职务管理 -->
+        <action name="addJob" class="jobAction" method="add">
+            <result>/apps/user/job_add.jsp</result>
+        </action>
+        <action name="saveJob" class="jobAction" method="save">
+            <result type="redirect">listJob.action?_tips=tip_save_success</result>
+        </action>
+        <action name="viewJob" class="jobAction" method="view">
+            <result>/apps/user/job_view.jsp</result>
+        </action>
+        <action name="editJob" class="jobAction" method="edit">
+            <result>/apps/user/job_edit.jsp</result>
+        </action>
+        <action name="updateJob" class="jobAction" method="update">
+            <result type="redirect">listJob.action?_tips=tip_save_success</result>
+        </action>
+        <action name="listJob" class="jobAction" method="list">
+            <result>/apps/user/job_list.jsp</result>
+        </action>
+        <action name="deleteJob" class="jobAction" method="delete">
+            <result type="redirect">listJob.action?_tips=tip_delete_success</result>
+        </action>
+        <action name="addJobLevel" class="jobAction" method="add">
+            <result>/apps/user/jobLevel_add.jsp</result>
+        </action>
+        <action name="saveJobLevel" class="jobAction" method="saveJobLevel">
+            <result type="redirect">viewJob.action?id=${id}&amp;_tips=tip_save_success
+            </result>
+        </action>
+        <action name="editJobLevel" class="jobAction" method="editJobLevel">
+            <result>/apps/user/jobLevel_edit.jsp</result>
+        </action>
+        <action name="updateJobLevel" class="jobAction" method="updateJobLevel">
+            <result type="redirect">viewJob.action?id=${id}&amp;_tips=tip_save_success
+            </result>
+        </action>
+        <action name="deleteJobLevel" class="jobAction" method="deleteJobLevel">
+            <result type="redirect">viewJob.action?id=${id}&amp;_tips=tip_delete_success
+            </result>
+        </action>
+
+        <!-- 角色管理 -->
+        <action name="listRole" class="roleAction" method="list">
+            <result name="success">/apps/user/roleList.jsp</result>
+        </action>
+
+        <action name="addRole" class="roleAction" method="add">
+            <result name="success">/apps/user/role_add.jsp</result>
+        </action>
+
+        <action name="editRole" class="roleAction" method="edit">
+            <result name="success">/apps/user/roleEdit.jsp</result>
+        </action>
+
+        <action name="saveRole" class="roleAction" method="save">
+            <result type="redirect">editRole.action?id=${role.id}&amp;_tips=tip_save_success
+            </result>
+        </action>
+
+        <action name="updateRole" class="roleAction" method="update">
+            <result type="redirect">editRole.action?id=${role.id}&amp;_tips=tip_save_success
+            </result>
+        </action>
+
+        <action name="deleteRole" class="roleAction" method="delete">
+
+            <result type="redirect">listRole.action?_tips=tip_delete_success</result>
+        </action>
+
+        <action name="editUserRole" class="userAction" method="editUserRole">
+
+            <result name="success">/apps/user/userRoleEdit.jsp</result>
+        </action>
+
+        <action name="updateUserRole" class="userAction" method="updateUserRole">
+
+            <result type="redirect">/user/editUserRole.action?id=${id}&amp;_tips=tip_save_success
+            </result>
+        </action>
+
+
+        <!-- 岗位 -->
+
+        <action name="listPosition" class="positionAction" method="list">
+            <result name="success">/apps/user/position_list.jsp</result>
+        </action>
+        <action name="addPosition" class="positionAction" method="add">
+            <result>/apps/user/position_add.jsp</result>
+        </action>
+        <action name="editPosition" class="positionAction" method="edit">
+            <result>/apps/user/position_edit.jsp</result>
+        </action>
+        <action name="savePosition" class="positionAction" method="save">
+            <result name="input">
+                editPosition.action?id=${position.id}&amp;_tips=tip_save_success
+            </result>
+            <result type="redirect">editPosition.action?id=${position.id}&amp;refresh=${position.department.id}&amp;_tips=tip_save_success
+            </result>
+        </action>
+        <action name="updatePosition" class="positionAction" method="update">
+            <result name="input">
+                editPosition.action?id=${position.id}&amp;_tips=tip_save_success
+            </result>
+            <result type="redirect">editPosition.action?id=${position.id}&amp;refresh=${position.department.id}&amp;_tips=tip_save_success
+            </result>
+        </action>
+        <action name="deletePosition" class="positionAction" method="delete">
+            <result type="redirect">editDepartment.action?id=${deptId}&amp;refresh=${deptId}&amp;_tips=tip_delete_success
+            </result>
+        </action>
+        <action name="movePosition" class="positionAction" method="move">
+            <result type="redirect">editPosition.action?id=${id}&amp;refresh=${position.department.id}&amp;_tips=tip_save_success
+            </result>
+        </action>
+
+
+        <action name="userPrivilege" class="authAction" method="userPrivilege">
+            <result>/apps/user/userAuth.jsp</result>
+        </action>
+
+        <action name="updateUserPrivilege" class="authAction" method="updateUserPrivilege">
+            <result type="redirect">userPrivilege.action?id=${id}&amp;type=${type}&amp;_tips=tip_save_success
+            </result>
+        </action>
+
+    </package>
+
+    <package name="subUser" extends="user" namespace="/user/sub">
+        <!--子用户管理-->
+        <action name="userList" class="subUserAction" method="list">
+            <result name="success">/apps/user/subUserList.jsp</result>
+            <result name="forward">${forward}</result>
+        </action>
+        <!---->
+        <action name="addUser" class="subUserAction" method="add">
+            <result>/apps/user/subUserAdd.jsp</result>
+        </action>
+        <action name="editUser" class="subUserAction" method="edit">
             <result>/apps/user/subUserEdit.jsp</result>
         </action>
-		<!-- 部门管理 -->
-		<action name="orgnization">
-			<result name="success">/apps/user/orgnization.jsp</result>
-		</action>
-		<action name="tree" class="departmentAction" method="tree">
-			<result name="success">/apps/user/tree.jsp</result>
-			<result name="userlist" type="redirect">userList.action?select=${select}&amp;callback=${callback}&amp;forward=/apps/user/tree_user.jsp
-			</result>
-		</action>
-		<action name="listUser" class="departmentAction" method="listUser">
-			<result name="success">/apps/user/listUser_json.jsp</result>
-		</action>
-		<action name="department" class="departmentAction" method="root">
-			<result name="success">/apps/user/root.jsp</result>
-		</action>
-		<action name="addDepartment" class="departmentAction" method="add">
-			<result>/apps/user/department_add.jsp</result>
-		</action>
-		<action name="editDepartment" class="departmentAction" method="edit">
-			<result>/apps/user/department_edit.jsp</result>
-		</action>
-		<action name="saveDepartment" class="departmentAction" method="update">
-			<result name="input">
-				/user/editDepartment.action?id=${department.id}
-			</result>
-			<result type="redirect">${forward}&amp;_tips=tip_save_success</result>
-		</action>
-		<action name="deleteDepartment" class="departmentAction"
-			method="delete">
-			<result type="redirect">${forward}&amp;_tips=tip_delete_success</result>
-		</action>
-		<action name="moveDepartment" class="departmentAction" method="move">
-			<result type="redirect">${forward}&amp;_tips=tip_save_success</result>
-		</action>
+
+        <!--<action name="editUserinfo" class="userAction" method="editUserinfo">-->
+            <!--<result>/apps/user/subUserEditinfo.jsp</result>-->
+        <!--</action>-->
+    </package>
 
 
-		<!-- 职称管理 -->
-		<action name="addTitle" class="titleAction" method="add">
-			<result>/apps/user/title_add.jsp</result>
-		</action>
-		<action name="saveTitle" class="titleAction" method="save">
-			<result type="redirect">listTitle.action?_tips=tip_save_success</result>
-		</action>
-		<action name="editTitle" class="titleAction" method="edit">
-			<result>/apps/user/title_edit.jsp</result>
-		</action>
-		<action name="updateTitle" class="titleAction" method="update">
-			<result type="redirect">listTitle.action?_tips=tip_save_success</result>
-		</action>
-		<action name="listTitle" class="titleAction" method="list">
-			<result>/apps/user/title_list.jsp</result>
-		</action>
-		<action name="deleteTitle" class="titleAction" method="delete">
-			<result type="redirect">listTitle.action?_tips=tip_delete_success
-			</result>
-		</action>
+    <package name="buUser" extends="user" namespace="/user/bu">
+        <!--子用户管理-->
+        <action name="userList" class="businessUnitUserAction" method="list">
+            <result name="success">/apps/user/buUserList.jsp</result>
+            <result name="forward">${forward}</result>
+        </action>
+        <!---->
+        <action name="addUser" class="businessUnitUserAction" method="add">
+            <result>/apps/user/buUserAdd.jsp</result>
+        </action>
+        <action name="editUser" class="businessUnitUserAction" method="edit">
+            <result>/apps/user/buUserEdit.jsp</result>
+        </action>
 
-		<!-- 职务管理 -->
-		<action name="addJob" class="jobAction" method="add">
-			<result>/apps/user/job_add.jsp</result>
-		</action>
-		<action name="saveJob" class="jobAction" method="save">
-			<result type="redirect">listJob.action?_tips=tip_save_success</result>
-		</action>
-		<action name="viewJob" class="jobAction" method="view">
-			<result>/apps/user/job_view.jsp</result>
-		</action>
-		<action name="editJob" class="jobAction" method="edit">
-			<result>/apps/user/job_edit.jsp</result>
-		</action>
-		<action name="updateJob" class="jobAction" method="update">
-			<result type="redirect">listJob.action?_tips=tip_save_success</result>
-		</action>
-		<action name="listJob" class="jobAction" method="list">
-			<result>/apps/user/job_list.jsp</result>
-		</action>
-		<action name="deleteJob" class="jobAction" method="delete">
-			<result type="redirect">listJob.action?_tips=tip_delete_success</result>
-		</action>
-		<action name="addJobLevel" class="jobAction" method="add">
-			<result>/apps/user/jobLevel_add.jsp</result>
-		</action>
-		<action name="saveJobLevel" class="jobAction" method="saveJobLevel">
-			<result type="redirect">viewJob.action?id=${id}&amp;_tips=tip_save_success
-			</result>
-		</action>
-		<action name="editJobLevel" class="jobAction" method="editJobLevel">
-			<result>/apps/user/jobLevel_edit.jsp</result>
-		</action>
-		<action name="updateJobLevel" class="jobAction" method="updateJobLevel">
-			<result type="redirect">viewJob.action?id=${id}&amp;_tips=tip_save_success
-			</result>
-		</action>
-		<action name="deleteJobLevel" class="jobAction" method="deleteJobLevel">
-			<result type="redirect">viewJob.action?id=${id}&amp;_tips=tip_delete_success
-			</result>
-		</action>
-
-		<!-- 角色管理 -->
-		<action name="listRole" class="roleAction" method="list">
-			<result name="success">/apps/user/roleList.jsp</result>
-		</action>
-
-		<action name="addRole" class="roleAction" method="add">
-			<result name="success">/apps/user/role_add.jsp</result>
-		</action>
-
-		<action name="editRole" class="roleAction" method="edit">
-			<result name="success">/apps/user/roleEdit.jsp</result>
-		</action>
-
-		<action name="saveRole" class="roleAction" method="save">
-			<result type="redirect">editRole.action?id=${role.id}&amp;_tips=tip_save_success
-			</result>
-		</action>
-
-		<action name="updateRole" class="roleAction" method="update">
-			<result type="redirect">editRole.action?id=${role.id}&amp;_tips=tip_save_success
-			</result>
-		</action>
-
-		<action name="deleteRole" class="roleAction" method="delete">
-
-			<result type="redirect">listRole.action?_tips=tip_delete_success</result>
-		</action>
-
-		<action name="editUserRole" class="userAction" method="editUserRole">
-
-			<result name="success">/apps/user/userRoleEdit.jsp</result>
-		</action>
-
-		<action name="updateUserRole" class="userAction" method="updateUserRole">
-
-			<result type="redirect">/user/editUserRole.action?id=${id}&amp;_tips=tip_save_success
-			</result>
-		</action>
+        <!--<action name="editUserinfo" class="userAction" method="editUserinfo">-->
+            <!--<result>/apps/user/subUserEditinfo.jsp</result>-->
+        <!--</action>-->
+    </package>
 
 
-		<!-- 岗位 -->
-
-		<action name="listPosition" class="positionAction" method="list">
-			<result name="success">/apps/user/position_list.jsp</result>
-		</action>
-		<action name="addPosition" class="positionAction" method="add">
-			<result>/apps/user/position_add.jsp</result>
-		</action>
-		<action name="editPosition" class="positionAction" method="edit">
-			<result>/apps/user/position_edit.jsp</result>
-		</action>
-		<action name="savePosition" class="positionAction" method="save">
-			<result name="input">
-				editPosition.action?id=${position.id}&amp;_tips=tip_save_success
-			</result>
-			<result type="redirect">editPosition.action?id=${position.id}&amp;refresh=${position.department.id}&amp;_tips=tip_save_success
-			</result>
-		</action>
-		<action name="updatePosition" class="positionAction" method="update">
-			<result name="input">
-				editPosition.action?id=${position.id}&amp;_tips=tip_save_success
-			</result>
-			<result type="redirect">editPosition.action?id=${position.id}&amp;refresh=${position.department.id}&amp;_tips=tip_save_success
-			</result>
-		</action>
-		<action name="deletePosition" class="positionAction" method="delete">
-			<result type="redirect">editDepartment.action?id=${deptId}&amp;refresh=${deptId}&amp;_tips=tip_delete_success
-			</result>
-		</action>
-		<action name="movePosition" class="positionAction" method="move">
-			<result type="redirect">editPosition.action?id=${id}&amp;refresh=${position.department.id}&amp;_tips=tip_save_success
-			</result>
-		</action>
+    <package name="member" extends="membered" namespace="/member">
+        <action name="me" class="memberAction" method="edit">
+            <result name="input">/member/edit.jsp</result>
+        </action>
+        <action name="update" class="memberAction" method="update">
+        </action>
+        <action name="updatePassword" class="memberAction" method="updatePassword">
+        </action>
+    </package>
 
 
+    <package name="memberLogin" extends="default" namespace="/member">
+        <action name="reg" class="memberAction" method="add">
+            <result name="input">/member/register.jsp</result>
+        </action>
+        <action name="check" class="memberAction" method="check">
+            <result>/member/check.jsp</result>
+        </action>
+        <action name="login" class="memberAction" method="login">
+            <result type="redirect">${url}</result>
+            <result name="login">/member/login.jsp</result>
+        </action>
+        <action name="save" class="memberAction" method="save">
+            <result type="redirect">/member/login.jsp?reg=${member.username}&amp;_tips=tip_reg_success
+            </result>
+        </action>
+        <action name="sendUrl" class="memberAction" method="sendUrl">
+        </action>
+    </package>
 
 
-		<action name="userPrivilege" class="authAction" method="userPrivilege">
-			<result>/apps/user/userAuth.jsp</result>
-		</action>
-
-		<action name="updateUserPrivilege" class="authAction" method="updateUserPrivilege">
-			<result type="redirect">userPrivilege.action?id=${id}&amp;type=${type}&amp;_tips=tip_save_success
-			</result>
-		</action>
-
-	</package>
-
-
-	<package name="member" extends="membered" namespace="/member">
-		<action name="me" class="memberAction" method="edit">
-			<result name="input">/member/edit.jsp</result>
-		</action>
-		<action name="update" class="memberAction" method="update">
-		</action>
-		<action name="updatePassword" class="memberAction" method="updatePassword">
-		</action>
-	</package>
-
-
-	<package name="memberLogin" extends="default" namespace="/member">
-		<action name="reg" class="memberAction" method="add">
-			<result name="input">/member/register.jsp</result>
-		</action>
-		<action name="check" class="memberAction" method="check">
-			<result>/member/check.jsp</result>
-		</action>
-		<action name="login" class="memberAction" method="login">
-			<result type="redirect">${url}</result>
-			<result name="login">/member/login.jsp</result>
-		</action>
-		<action name="save" class="memberAction" method="save">
-			<result type="redirect">/member/login.jsp?reg=${member.username}&amp;_tips=tip_reg_success
-			</result>
-		</action>
-		<action name="sendUrl" class="memberAction" method="sendUrl">
-		</action>
-	</package>
+    <package name="memberManage" extends="authed" namespace="/member">
+        <action name="list" class="memberManageAction" method="list">
+            <result>/apps/member/list.jsp</result>
+        </action>
+        <action name="view" class="memberManageAction" method="view">
+            <result name="view">/apps/member/view.jsp</result>
+        </action>
+        <action name="delete" class="memberManageAction" method="delete">
+            <result type="redirect">list.action?_tips=tip_delete_success</result>
+        </action>
+        <action name="edit" class="memberManageAction" method="edit">
+            <result>/apps/member/edit.jsp</result>
+        </action>
+        <action name="lock" class="memberManageAction" method="lock">
+            <result type="redirect">list.action?_tips=tip_lock_success</result>
+        </action>
+        <action name="unlock" class="memberManageAction" method="unlock">
+            <result type="redirect">list.action?_tips=tip_unlock_success</result>
+        </action>
+    </package>
 
 
-	<package name="memberManage" extends="authed" namespace="/member">
-		<action name="list" class="memberManageAction" method="list">
-			<result>/apps/member/list.jsp</result>
-		</action>
-		<action name="view" class="memberManageAction" method="view">
-			<result name="view">/apps/member/view.jsp</result>
-		</action>
-		<action name="delete" class="memberManageAction" method="delete">
-			<result type="redirect">list.action?_tips=tip_delete_success</result>
-		</action>
-		<action name="edit" class="memberManageAction" method="edit">
-			<result>/apps/member/edit.jsp</result>
-		</action>
-		<action name="lock" class="memberManageAction" method="lock">
-			<result type="redirect">list.action?_tips=tip_lock_success</result>
-		</action>
-		<action name="unlock" class="memberManageAction" method="unlock">
-			<result type="redirect">list.action?_tips=tip_unlock_success</result>
-		</action>
-	</package>
-
-
-	<package name="dataOwner" extends="authed" namespace="/dataOwner">
-		<action name="*" class="dataOwnerConfigAction" method="{1}">
-			<result name="list">/apps/auth/dataowner_config_list.jsp</result>
-			<result name="add">/apps/auth/dataowner_config_add.jsp</result>
-			<result name="edit">/apps/auth/dataowner_config_edit.jsp</result>
-			<result name="rdlist" type="redirect">list.action</result>
-		</action>
-	</package>
+    <package name="dataOwner" extends="authed" namespace="/dataOwner">
+        <action name="*" class="dataOwnerConfigAction" method="{1}">
+            <result name="list">/apps/auth/dataowner_config_list.jsp</result>
+            <result name="add">/apps/auth/dataowner_config_add.jsp</result>
+            <result name="edit">/apps/auth/dataowner_config_edit.jsp</result>
+            <result name="rdlist" type="redirect">list.action</result>
+        </action>
+    </package>
 
 </struts>

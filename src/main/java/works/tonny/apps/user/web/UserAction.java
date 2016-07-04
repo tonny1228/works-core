@@ -13,6 +13,7 @@ import works.tonny.apps.user.Role;
 import works.tonny.apps.user.User;
 import works.tonny.apps.user.model.UserInfo;
 import works.tonny.apps.user.service.AuthEntityService;
+import works.tonny.apps.user.service.OrgnizationHelper;
 import works.tonny.apps.user.service.RoleEntityService;
 import works.tonny.apps.user.service.TitleService;
 import works.tonny.apps.user.service.UserEntityService;
@@ -36,19 +37,22 @@ public class UserAction extends AuthedAction {
      */
     protected RoleEntityService roleService;
 
-    private Encryptable encryptable;
+    protected Encryptable encryptable;
 
     protected TitleService titleService;
 
-    private User user;
+    protected OrgnizationHelper orgnizationHelper;
 
-    private UserInfo userinfo;
 
-    private String id;
+    protected User user;
 
-    private String positionId;
+    protected UserInfo userinfo;
 
-    private String[] roleId;
+    protected String id;
+
+    protected String positionId;
+
+    protected String[] roleId;
 
     /**
      * 用户列表与查询用户
@@ -60,16 +64,6 @@ public class UserAction extends AuthedAction {
         PagedList<User> list = userService.list(getParameter("name"), getParameter("username"), getPage(),
                 getPagesize());
         request.setAttribute("list", list);
-        if (StringUtils.isNotEmpty(forward)) {
-            return "forward";
-        }
-        return SUCCESS;
-    }
-
-
-    public String subList() {
-        PagedList<User> users = userService.createUserQuery().createUser(loginedUser().getUser().getUsername()).orderByName(Query.Direction.ASC).listRange(getOffset(), getLimit());
-        request.setAttribute("list", users);
         if (StringUtils.isNotEmpty(forward)) {
             return "forward";
         }
@@ -245,11 +239,6 @@ public class UserAction extends AuthedAction {
         return SUCCESS;
     }
 
-
-    public String saveSubUser(){
-        user.setCreateUser(loginedUser().getUser().getUsername());
-        return save();
-    }
 
     /**
      * 编辑用户
@@ -430,5 +419,14 @@ public class UserAction extends AuthedAction {
      */
     public void setEncryptable(Encryptable encryptable) {
         this.encryptable = encryptable;
+    }
+
+
+    public OrgnizationHelper getOrgnizationHelper() {
+        return orgnizationHelper;
+    }
+
+    public void setOrgnizationHelper(OrgnizationHelper orgnizationHelper) {
+        this.orgnizationHelper = orgnizationHelper;
     }
 }

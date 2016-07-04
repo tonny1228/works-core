@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+    <!-- local service -->
+
+    <bean id="localMessageRegisterService" class="works.tonny.apps.support.message.LocalMessageRegisterService"
+          lazy-init="true"/>
+
+    <bean id="localMessageBroadcastService" class="works.tonny.apps.support.message.LocalMessageBroadcastService"
+          lazy-init="true">
+        <property name="notifyLocalListener" ref="notifyLocalListener"/>
+    </bean>
+
+    <bean id="notifyLocalListener" class="works.tonny.apps.support.message.NotifyLocalListener" lazy-init="true">
+        <property name="messageService" ref="localMessageRegisterService"/>
+    </bean>
+
+
+    <bean class="works.tonny.apps.support.message.SpringHelper">
+        <property name="type" value="${message.type}"/>
+        <property name="center" value="${message.center}"/>
+        <property name="initMap">
+            <map>
+                <entry key="local.broadcastBean" value="localMessageBroadcastService"/>
+                <entry key="local.messageServiceBean" value="localMessageRegisterService"/>
+                <entry key="jms.broadcastBean" value="jmsBroadcastService"/>
+                <entry key="jms.messageServiceBean" value="jmsMessageRegisterService"/>
+            </map>
+        </property>
+    </bean>
+</beans>

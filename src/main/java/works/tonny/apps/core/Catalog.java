@@ -74,6 +74,7 @@ public class Catalog extends Entity implements DataOwnerAware<CatalogDataOwner> 
 
     private CatalogTreeNode treeNode;
 
+
     private Set<CatalogDataOwner> owner;
 
     public Catalog() {

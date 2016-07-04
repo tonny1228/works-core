@@ -1,4 +1,4 @@
-/**  
+/**
  * @Title: UserPrivilegeListener.java
  * @Package works.tonny.user.service.impl
  * @author Tonny
@@ -15,11 +15,12 @@ import works.tonny.apps.user.service.AuthEntityService;
 
 /**
  * @ClassName: UserPrivilegeListener
- * @Description: 
+ * @Description:
  * @author Tonny
  * @date 2011-12-13 下午8:20:51
  * @version 1.0
  */
+
 /**
  * @ClassName: UserPrivilegeListener
  * @Description:
@@ -29,31 +30,36 @@ import works.tonny.apps.user.service.AuthEntityService;
  */
 public class UserPrivilegeListener implements MessageListener<User> {
 
-	private AuthEntityService authService;
+    private AuthEntityService authService;
 
-	/**
-	 * 
-	 */
-	public UserPrivilegeListener() {
-		MessageManager.register(User.class, this, MessageEvent.DELETED);
-	}
+    /**
+     *
+     */
+    public UserPrivilegeListener() {
+        MessageManager.register(User.class, this, MessageEvent.DELETED);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see works.tonny.apps.support.message.MessageListener#onRecieved(works.tonny.apps.support.message.MessageEvent)
-	 */
-	public void onRecieved(MessageEvent<User> message) throws MessageHandleException {
-		User user = message.getData();
-		authService.updateUserPrivilege(user.getId(), new String[] {});
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @see works.tonny.apps.support.message.MessageListener#onRecieved(works.tonny.apps.support.message.MessageEvent)
+     */
+    public void onRecieved(MessageEvent<User> message) throws MessageHandleException {
+        User user = message.getData();
+        authService.updateUserPrivilege(user.getId(), new String[]{});
+    }
 
-	public AuthEntityService getAuthService() {
-		return authService;
-	}
+    @Override
+    public boolean isSingleton() {
+        return true;
+    }
 
-	public void setAuthService(AuthEntityService authService) {
-		this.authService = authService;
-	}
+    public AuthEntityService getAuthService() {
+        return authService;
+    }
+
+    public void setAuthService(AuthEntityService authService) {
+        this.authService = authService;
+    }
 
 }

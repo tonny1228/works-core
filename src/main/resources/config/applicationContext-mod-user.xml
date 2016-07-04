@@ -1,215 +1,208 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans   
-	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
-	http://www.springframework.org/schema/context   
-	http://www.springframework.org/schema/context/spring-context-3.0.xsd  
-	http://www.springframework.org/schema/aop  
-	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd  
-	http://www.springframework.org/schema/tx  
-	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean class="works.tonny.apps.user.UserServiceFactory$Helper">
-		<property name="companyService" ref="companyService" />
-		<property name="departmentService" ref="departmentService" />
-		<property name="departmentEntityService" ref="departmentService" />
-		<property name="positionService" ref="positionService" />
-		<property name="positionEntityService" ref="positionService" />
-		<property name="roleService" ref="roleService" />
-		<property name="roleEntityService" ref="roleService" />
-		<property name="jobService" ref="jobService" />
-		<property name="titleService" ref="titleService" />
-		<property name="userService" ref="userService" />
-		<property name="userEntityService" ref="userEntityService" />
-		<property name="authService" ref="authService" />
-		<property name="authEntityService" ref="authService" />
-		<property name="memberService" ref="memberService" />
-        <property name="orgnizationHelper" ref="orgnizationHelper" />
-	</bean>
+    <bean class="works.tonny.apps.user.UserServiceFactory$Helper">
+        <property name="companyService" ref="companyService"/>
+        <property name="departmentService" ref="departmentService"/>
+        <property name="departmentEntityService" ref="departmentService"/>
+        <property name="positionService" ref="positionService"/>
+        <property name="positionEntityService" ref="positionService"/>
+        <property name="roleService" ref="roleService"/>
+        <property name="roleEntityService" ref="roleService"/>
+        <property name="jobService" ref="jobService"/>
+        <property name="titleService" ref="titleService"/>
+        <property name="userService" ref="userService"/>
+        <property name="userEntityService" ref="userEntityService"/>
+        <property name="authService" ref="authService"/>
+        <property name="authEntityService" ref="authService"/>
+        <property name="memberService" ref="memberService"/>
+        <property name="orgnizationHelper" ref="orgnizationHelper"/>
+    </bean>
 
-	<!-- 公司管理 -->
-	<bean name="companyDAO" parent="abstractDao">
-		<property name="proxyInterfaces">
-			<value>works.tonny.apps.user.dao.CompanyDAO</value>
-		</property>
-		<property name="target" ref="baseDAOSupport" />
-		<property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.Company" />
-	</bean>
+    <!-- 公司管理 -->
+    <bean name="companyDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.user.dao.CompanyDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.Company"/>
+    </bean>
 
 
-	<bean id="companyService" class="works.tonny.apps.user.service.impl.CompanyServiceImpl">
-		<property name="companyDAO" ref="companyDAO" />
-	</bean>
+    <bean id="companyService" class="works.tonny.apps.user.service.impl.CompanyServiceImpl">
+        <property name="companyDAO" ref="companyDAO"/>
+    </bean>
 
-	<bean id="companyAction" class="works.tonny.apps.user.web.CompanyAction"
-		scope="prototype">
-		<property name="companyService" ref="companyService" />
-	</bean>
+    <bean id="companyAction" class="works.tonny.apps.user.web.CompanyAction"
+          scope="prototype">
+        <property name="companyService" ref="companyService"/>
+    </bean>
 
-	<!-- 部门管理 -->
-	<bean name="departmentDAO" parent="abstractDao">
-		<property name="proxyInterfaces">
-			<value>works.tonny.apps.user.dao.DepartmentDAO</value>
-		</property>
-		<property name="target" ref="baseDAOSupport" />
-		<property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.Department" />
-	</bean>
+    <!-- 部门管理 -->
+    <bean name="departmentDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.user.dao.DepartmentDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.Department"/>
+    </bean>
 
-	<bean name="businessUnitDAO" parent="abstractDao">
-		<property name="proxyInterfaces">
-			<value>works.tonny.apps.user.dao.BusinessUnitDAO</value>
-		</property>
-		<property name="target" ref="baseDAOSupport" />
-		<property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.BusinessUnit" />
-	</bean>
-
-
-	<bean id="departmentService"
-		class="works.tonny.apps.user.service.impl.DepartmentServiceImpl">
-		<property name="departmentDAO" ref="departmentDAO" />
-		<property name="positionDAO" ref="positionDAO" />
-		<property name="businessUnitDAO" ref="businessUnitDAO" />
-		<property name="treeService">
-			<bean name="treeNodeservice" class="works.tonny.apps.core.service.TreeServiceImpl">
-				<property name="treeNodeDAO">
-					<bean name="treeNodeDAO" parent="abstractDao">
-						<property name="proxyInterfaces">
-							<value>works.tonny.apps.core.dao.TreeNodeDAO</value>
-						</property>
-						<property name="target" ref="baseDAOSupport" />
-						<property name="targetSource.target.entityClass"
-							value="works.tonny.apps.user.model.DepartmentTreeNode" />
-					</bean>
-				</property>
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="departmentAction" class="works.tonny.apps.user.web.DepartmentAction"
-		scope="prototype">
-		<property name="departmentService" ref="departmentService" />
-		<property name="positionService" ref="positionService" />
-		<property name="userService" ref="userService" />
-		<property name="orgnizationHelper" ref="orgnizationHelper" />
-	</bean>
-	<!-- 岗位管理 -->
-	<bean name="positionDAO" parent="abstractDao">
-		<property name="proxyInterfaces">
-			<value>works.tonny.apps.user.dao.PositionDAO</value>
-		</property>
-		<property name="target" ref="baseDAOSupport" />
-		<property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.Position" />
-	</bean>
-
-	<bean id="positionService" class="works.tonny.apps.user.service.impl.PositionServiceImpl">
-		<property name="positionDAO" ref="positionDAO" />
-		<property name="departmentDAO" ref="departmentDAO" />
-		<property name="treeService">
-			<bean name="treeNodeservice" class="works.tonny.apps.core.service.TreeServiceImpl">
-				<property name="treeNodeDAO">
-					<bean name="treeNodeDAO" parent="abstractDao">
-						<property name="proxyInterfaces">
-							<value>works.tonny.apps.core.dao.TreeNodeDAO</value>
-						</property>
-						<property name="target" ref="baseDAOSupport" />
-						<property name="targetSource.target.entityClass"
-							value="works.tonny.apps.user.model.PositionTreeNode" />
-					</bean>
-				</property>
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="positionAction" class="works.tonny.apps.user.web.PositionAction"
-		scope="prototype">
-		<property name="positionService" ref="positionService" />
-		<property name="departmentService" ref="departmentService" />
-		<property name="jobService" ref="jobService" />
-	</bean>
-
-	<!-- 角色管理 -->
+    <bean name="businessUnitDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.user.dao.BusinessUnitDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.BusinessUnit"/>
+    </bean>
 
 
-	<bean id="roleDAO" parent="abstractDao">
-		<property name="proxyInterfaces">
-			<value>works.tonny.apps.user.dao.RoleDAO</value>
-		</property>
-		<property name="target" ref="baseDAOSupport">
-		</property>
-		<property name="targetSource.target.entityClass" value="works.tonny.apps.user.Role" />
-	</bean>
+    <bean id="departmentService"
+          class="works.tonny.apps.user.service.impl.DepartmentServiceImpl">
+        <property name="departmentDAO" ref="departmentDAO"/>
+        <property name="positionDAO" ref="positionDAO"/>
+        <property name="businessUnitDAO" ref="businessUnitDAO"/>
+        <property name="treeService">
+            <bean name="treeNodeservice" class="works.tonny.apps.core.service.TreeServiceImpl">
+                <property name="treeNodeDAO">
+                    <bean name="treeNodeDAO" parent="abstractDao">
+                        <property name="proxyInterfaces">
+                            <value>works.tonny.apps.core.dao.TreeNodeDAO</value>
+                        </property>
+                        <property name="target" ref="baseDAOSupport"/>
+                        <property name="targetSource.target.entityClass"
+                                  value="works.tonny.apps.user.model.DepartmentTreeNode"/>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
 
-	<bean id="roleService" class="works.tonny.apps.user.service.impl.RoleServiceImpl">
-		<property name="roleDAO" ref="roleDAO" />
-	</bean>
+    <bean id="departmentAction" class="works.tonny.apps.user.web.DepartmentAction"
+          scope="prototype">
+        <property name="departmentService" ref="departmentService"/>
+        <property name="positionService" ref="positionService"/>
+        <property name="userService" ref="userService"/>
+        <property name="orgnizationHelper" ref="orgnizationHelper"/>
+    </bean>
+    <!-- 岗位管理 -->
+    <bean name="positionDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.user.dao.PositionDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.Position"/>
+    </bean>
 
-	<bean id="roleAction" class="works.tonny.apps.user.web.RoleAction"
-		scope="prototype">
-		<property name="roleService" ref="roleService" />
-		<property name="authService" ref="authService" />
-	</bean>
+    <bean id="positionService" class="works.tonny.apps.user.service.impl.PositionServiceImpl">
+        <property name="positionDAO" ref="positionDAO"/>
+        <property name="departmentDAO" ref="departmentDAO"/>
+        <property name="treeService">
+            <bean name="treeNodeservice" class="works.tonny.apps.core.service.TreeServiceImpl">
+                <property name="treeNodeDAO">
+                    <bean name="treeNodeDAO" parent="abstractDao">
+                        <property name="proxyInterfaces">
+                            <value>works.tonny.apps.core.dao.TreeNodeDAO</value>
+                        </property>
+                        <property name="target" ref="baseDAOSupport"/>
+                        <property name="targetSource.target.entityClass"
+                                  value="works.tonny.apps.user.model.PositionTreeNode"/>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
 
-	<!-- job -->
+    <bean id="positionAction" class="works.tonny.apps.user.web.PositionAction"
+          scope="prototype">
+        <property name="positionService" ref="positionService"/>
+        <property name="departmentService" ref="departmentService"/>
+        <property name="jobService" ref="jobService"/>
+    </bean>
 
-	<bean id="jobDAO" parent="abstractDao">
-		<property name="proxyInterfaces">
-			<value>works.tonny.apps.user.dao.JobDAO</value>
-		</property>
-		<property name="target" ref="baseDAOSupport">
-		</property>
-		<property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.Job" />
-	</bean>
-
-	<bean id="jobLevelDAO" parent="abstractDao">
-		<property name="proxyInterfaces">
-			<value>works.tonny.apps.user.dao.JobLevelDAO</value>
-		</property>
-		<property name="target" ref="baseDAOSupport">
-		</property>
-		<property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.JobLevel" />
-	</bean>
-
-	<bean id="jobService" class="works.tonny.apps.user.service.impl.JobServiceImpl">
-		<property name="jobDAO" ref="jobDAO" />
-		<property name="jobLevelDAO" ref="jobLevelDAO" />
-	</bean>
-
-	<bean id="jobAction" class="works.tonny.apps.user.web.JobAction"
-		scope="prototype">
-		<property name="jobService" ref="jobService" />
-	</bean>
+    <!-- 角色管理 -->
 
 
-	<bean id="titleDAO" parent="abstractDao">
-		<property name="proxyInterfaces">
-			<value>works.tonny.apps.user.dao.TitleDAO</value>
-		</property>
-		<property name="target" ref="baseDAOSupport">
-		</property>
-		<property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.Title" />
-	</bean>
+    <bean id="roleDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.user.dao.RoleDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport">
+        </property>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.Role"/>
+    </bean>
 
-	<bean id="titleService" class="works.tonny.apps.user.service.impl.TitleServiceImpl">
-		<property name="titleDAO" ref="titleDAO" />
-	</bean>
+    <bean id="roleService" class="works.tonny.apps.user.service.impl.RoleServiceImpl">
+        <property name="roleDAO" ref="roleDAO"/>
+    </bean>
 
-	<bean id="titleAction" class="works.tonny.apps.user.web.TitleAction"
-		scope="prototype">
-		<property name="titleService" ref="titleService" />
-	</bean>
+    <bean id="roleAction" class="works.tonny.apps.user.web.RoleAction"
+          scope="prototype">
+        <property name="roleService" ref="roleService"/>
+        <property name="authService" ref="authService"/>
+    </bean>
 
-	<!-- 用户管理 -->
-	<bean id="userDAO" parent="abstractDao">
-		<property name="proxyInterfaces">
-			<value>works.tonny.apps.user.dao.UserDAO</value>
-		</property>
-		<property name="target" ref="baseDAOSupport">
-		</property>
-		<property name="targetSource.target.entityClass" value="works.tonny.apps.user.User" />
-		<property name="targetSource.target.ownerClass" value="works.tonny.apps.user.UserDataOwner" />
-	</bean>
+    <!-- job -->
+
+    <bean id="jobDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.user.dao.JobDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport">
+        </property>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.Job"/>
+    </bean>
+
+    <bean id="jobLevelDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.user.dao.JobLevelDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport">
+        </property>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.JobLevel"/>
+    </bean>
+
+    <bean id="jobService" class="works.tonny.apps.user.service.impl.JobServiceImpl">
+        <property name="jobDAO" ref="jobDAO"/>
+        <property name="jobLevelDAO" ref="jobLevelDAO"/>
+    </bean>
+
+    <bean id="jobAction" class="works.tonny.apps.user.web.JobAction"
+          scope="prototype">
+        <property name="jobService" ref="jobService"/>
+    </bean>
+
+
+    <bean id="titleDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.user.dao.TitleDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport">
+        </property>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.Title"/>
+    </bean>
+
+    <bean id="titleService" class="works.tonny.apps.user.service.impl.TitleServiceImpl">
+        <property name="titleDAO" ref="titleDAO"/>
+    </bean>
+
+    <bean id="titleAction" class="works.tonny.apps.user.web.TitleAction"
+          scope="prototype">
+        <property name="titleService" ref="titleService"/>
+    </bean>
+
+    <!-- 用户管理 -->
+    <bean id="userDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.user.dao.UserDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport">
+        </property>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.User"/>
+        <property name="targetSource.target.ownerClass" value="works.tonny.apps.user.UserDataOwner"/>
+    </bean>
 
     <bean id="userinfoDAO" parent="abstractDao">
         <property name="proxyInterfaces">
@@ -217,7 +210,7 @@
         </property>
         <property name="target" ref="baseDAOSupport">
         </property>
-        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.UserInfo" />
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.UserInfo"/>
     </bean>
 
 
@@ -227,168 +220,173 @@
         </property>
         <property name="target" ref="baseDAOSupport">
         </property>
-        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.UserInfoEntity" />
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.UserInfoEntity"/>
     </bean>
 
     <bean id="userPositionDAO" parent="abstractDao">
-		<property name="proxyInterfaces">
-			<value>works.tonny.apps.user.dao.UserPositionDAO</value>
-		</property>
-		<property name="target" ref="baseDAOSupport">
-		</property>
-		<property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.UserPosition" />
-	</bean>
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.user.dao.UserPositionDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport">
+        </property>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.UserPosition"/>
+    </bean>
 
-	<bean id="userService" name="userEntityService" class="works.tonny.apps.user.service.impl.UserServiceImpl">
-		<property name="userinfoDAO" ref="userinfoDAO" />
-		<property name="userDAO" ref="userDAO" />
-		<property name="roleDAO" ref="roleDAO" />
-		<property name="titleDAO" ref="titleDAO" />
-		<property name="positionDAO" ref="positionDAO" />
-		<property name="userPositionDAO" ref="userPositionDAO" />
-		<property name="userPropertiesDAO" ref="baseDAOSupport" />
-		<property name="encryptable" ref="userPasswordEncoder" />
+    <bean id="userService" name="userEntityService" class="works.tonny.apps.user.service.impl.UserServiceImpl">
+        <property name="userinfoDAO" ref="userinfoDAO"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="roleDAO" ref="roleDAO"/>
+        <property name="titleDAO" ref="titleDAO"/>
+        <property name="positionDAO" ref="positionDAO"/>
+        <property name="userPositionDAO" ref="userPositionDAO"/>
+        <property name="userPropertiesDAO" ref="baseDAOSupport"/>
+        <property name="encryptable" ref="userPasswordEncoder"/>
         <property name="userInfoEntityDAO" ref="userinfoEntityDAO"/>
-	</bean>
+    </bean>
 
-	<bean id="userAction" class="works.tonny.apps.user.web.UserAction"
-		scope="prototype">
-		<property name="userService" ref="userService" />
-		<property name="authService" ref="authService" />
-		<property name="roleService" ref="roleService" />
-		<property name="titleService" ref="titleService" />
-		<property name="encryptable" ref="userPasswordEncoder" />
-	</bean>
-	<bean id="loginAction" class="works.tonny.apps.user.web.LoginAction"
-		scope="prototype">
-		<property name="userService" ref="userService" />
-		<property name="authService" ref="authService" />
-		<property name="userLoginEventService" ref="userLoginEventService" />
-	</bean>
+    <bean id="userAction" class="works.tonny.apps.user.web.UserAction"
+          scope="prototype">
+        <property name="userService" ref="userService"/>
+        <property name="authService" ref="authService"/>
+        <property name="roleService" ref="roleService"/>
+        <property name="titleService" ref="titleService"/>
+        <property name="encryptable" ref="userPasswordEncoder"/>
+        <property name="orgnizationHelper" ref="orgnizationHelper"/>
+    </bean>
+
+    <bean id="subUserAction" class="works.tonny.apps.user.web.SubUserAction" parent="userAction"
+          scope="prototype">
+    </bean>
+    <bean id="businessUnitUserAction" class="works.tonny.apps.user.web.BusinessUnitUserAction" parent="userAction"
+          scope="prototype">
+    </bean>
+    <bean id="loginAction" class="works.tonny.apps.user.web.LoginAction"
+          scope="prototype">
+        <property name="userService" ref="userService"/>
+        <property name="authService" ref="authService"/>
+        <property name="userLoginEventService" ref="userLoginEventService"/>
+    </bean>
 
 
+    <!-- 权限管理 -->
+    <bean id="authService" class="works.tonny.apps.user.service.impl.AuthServiceImpl"
+          scope="prototype">
+        <property name="authDAO" ref="authDAO"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="roleDAO" ref="roleDAO"/>
+        <property name="memberService" ref="memberService"/>
+        <property name="systemResourceDAO" ref="systemResourceDAO"/>
+        <property name="userPrivilegeDAO" ref="userPrivilegeDAO"/>
+        <property name="rolePrivilegeDAO" ref="rolePrivilegeDAO"/>
+        <property name="positionPrivilegeDAO" ref="positionPrivilegeDAO"/>
+        <property name="encryptable" ref="userPasswordEncoder"/>
+    </bean>
 
+    <bean id="authDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.user.dao.AuthDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.Privilege"/>
+    </bean>
+    <bean id="systemResourceDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.user.dao.SystemResourceDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.SystemResource"/>
+    </bean>
+    <bean id="userPrivilegeDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.user.dao.UserPrivilegeDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.UserPrivilege"/>
+    </bean>
+    <bean id="rolePrivilegeDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.user.dao.RolePrivilegeDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.RolePrivilege"/>
+    </bean>
+    <bean id="positionPrivilegeDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.user.dao.PositionPrivilegeDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass"
+                  value="works.tonny.apps.user.model.PositionPrivilege"/>
+    </bean>
 
+    <bean id="systemResourceAction" class="works.tonny.apps.user.web.SystemResourceAction"
+          scope="prototype">
+        <property name="authService" ref="authService"/>
+        <property name="userService" ref="userService"/>
+    </bean>
 
-	<!-- 权限管理 -->
-	<bean id="authService" class="works.tonny.apps.user.service.impl.AuthServiceImpl"
-		scope="prototype">
-		<property name="authDAO" ref="authDAO" />
-		<property name="userDAO" ref="userDAO" />
-		<property name="roleDAO" ref="roleDAO" />
-		<property name="memberService" ref="memberService" />
-		<property name="systemResourceDAO" ref="systemResourceDAO" />
-		<property name="userPrivilegeDAO" ref="userPrivilegeDAO" />
-		<property name="rolePrivilegeDAO" ref="rolePrivilegeDAO" />
-		<property name="positionPrivilegeDAO" ref="positionPrivilegeDAO" />
-		<property name="encryptable" ref="userPasswordEncoder" />
-	</bean>
+    <bean id="privilegeAction" class="works.tonny.apps.user.web.PrivilegeAction"
+          scope="prototype">
+        <property name="authService" ref="authService"/>
+    </bean>
 
-	<bean id="authDAO" parent="abstractDao">
-		<property name="proxyInterfaces">
-			<value>works.tonny.apps.user.dao.AuthDAO</value>
-		</property>
-		<property name="target" ref="baseDAOSupport" />
-		<property name="targetSource.target.entityClass" value="works.tonny.apps.user.Privilege" />
-	</bean>
-	<bean id="systemResourceDAO" parent="abstractDao">
-		<property name="proxyInterfaces">
-			<value>works.tonny.apps.user.dao.SystemResourceDAO</value>
-		</property>
-		<property name="target" ref="baseDAOSupport" />
-		<property name="targetSource.target.entityClass" value="works.tonny.apps.user.SystemResource" />
-	</bean>
-	<bean id="userPrivilegeDAO" parent="abstractDao">
-		<property name="proxyInterfaces">
-			<value>works.tonny.apps.user.dao.UserPrivilegeDAO</value>
-		</property>
-		<property name="target" ref="baseDAOSupport" />
-		<property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.UserPrivilege" />
-	</bean>
-	<bean id="rolePrivilegeDAO" parent="abstractDao">
-		<property name="proxyInterfaces">
-			<value>works.tonny.apps.user.dao.RolePrivilegeDAO</value>
-		</property>
-		<property name="target" ref="baseDAOSupport" />
-		<property name="targetSource.target.entityClass" value="works.tonny.apps.user.model.RolePrivilege" />
-	</bean>
-	<bean id="positionPrivilegeDAO" parent="abstractDao">
-		<property name="proxyInterfaces">
-			<value>works.tonny.apps.user.dao.PositionPrivilegeDAO</value>
-		</property>
-		<property name="target" ref="baseDAOSupport" />
-		<property name="targetSource.target.entityClass"
-			value="works.tonny.apps.user.model.PositionPrivilege" />
-	</bean>
+    <bean id="authAction" class="works.tonny.apps.user.web.AuthAction"
+          scope="prototype">
+        <property name="authService" ref="authService"/>
+        <property name="userService" ref="userService"/>
+        <property name="roleService" ref="roleService"/>
+    </bean>
 
-	<bean id="systemResourceAction" class="works.tonny.apps.user.web.SystemResourceAction"
-		scope="prototype">
-		<property name="authService" ref="authService" />
-		<property name="userService" ref="userService" />
-	</bean>
-
-	<bean id="privilegeAction" class="works.tonny.apps.user.web.PrivilegeAction"
-		scope="prototype">
-		<property name="authService" ref="authService" />
-	</bean>
-
-	<bean id="authAction" class="works.tonny.apps.user.web.AuthAction"
-		scope="prototype">
-		<property name="authService" ref="authService" />
-		<property name="userService" ref="userService" />
-		<property name="roleService" ref="roleService" />
-	</bean>
-
-	<bean id="privilegeListener"
-		class="works.tonny.apps.user.service.impl.UserPrivilegeListener">
-		<property name="authService" ref="authService" />
-	</bean>
+    <bean id="privilegeListener"
+          class="works.tonny.apps.user.service.impl.UserPrivilegeListener">
+        <property name="authService" ref="authService"/>
+    </bean>
 
     <bean class="works.tonny.apps.user.service.impl.UserPositionListener">
         <property name="userInfoEntityDAO" ref="userinfoEntityDAO"/>
         <property name="userPositionDAO" ref="userPositionDAO"/>
     </bean>
 
-	<bean name="memberService" class="works.tonny.apps.user.service.impl.MemberServiceImpl"
-		scope="prototype">
-		<property name="memberDAO" ref="memberDAO" />
-		<property name="encryptable" ref="userPasswordEncoder" />
-	</bean>
-	<bean id="memberDAO" parent="abstractDao">
-		<property name="proxyInterfaces">
-			<value>works.tonny.apps.user.dao.MemberDAO</value>
-		</property>
-		<property name="target" ref="baseDAOSupport" />
-		<property name="targetSource.target.entityClass" value="works.tonny.apps.user.Member" />
-	</bean>
-	<bean name="memberAction" class="works.tonny.apps.user.web.MemberAction"
-		scope="prototype">
-		<property name="memberService" ref="memberService" />
-		<property name="authService" ref="authService" />
-		<property name="encryptable" ref="userPasswordEncoder" />
-		<property name="userLoginEventService" ref="userLoginEventService" />
-	</bean>
+    <bean name="memberService" class="works.tonny.apps.user.service.impl.MemberServiceImpl"
+          scope="prototype">
+        <property name="memberDAO" ref="memberDAO"/>
+        <property name="encryptable" ref="userPasswordEncoder"/>
+    </bean>
+    <bean id="memberDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.user.dao.MemberDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.user.Member"/>
+    </bean>
+    <bean name="memberAction" class="works.tonny.apps.user.web.MemberAction"
+          scope="prototype">
+        <property name="memberService" ref="memberService"/>
+        <property name="authService" ref="authService"/>
+        <property name="encryptable" ref="userPasswordEncoder"/>
+        <property name="userLoginEventService" ref="userLoginEventService"/>
+    </bean>
 
-	<bean name="memberManageAction" class="works.tonny.apps.user.web.MemberManageAction"
-		scope="prototype">
-		<property name="memberService" ref="memberService" />
-	</bean>
+    <bean name="memberManageAction" class="works.tonny.apps.user.web.MemberManageAction"
+          scope="prototype">
+        <property name="memberService" ref="memberService"/>
+    </bean>
 
-	<bean name="orgnizationHelper"
-		class="works.tonny.apps.user.service.impl.OrgnizationHelperImpl"
-		scope="prototype">
-		<property name="positionService" ref="positionService" />
-		<property name="userService" ref="userService" />
-		<property name="departmentService" ref="departmentService" />
-	</bean>
+    <bean name="orgnizationHelper"
+          class="works.tonny.apps.user.service.impl.OrgnizationHelperImpl"
+          scope="prototype">
+        <property name="positionService" ref="positionService"/>
+        <property name="userService" ref="userService"/>
+        <property name="departmentService" ref="departmentService"/>
+    </bean>
 
-	<bean id="dataOwnerConfigDAO" parent="abstractDao">
-		<property name="proxyInterfaces">
-			<value>works.tonny.apps.auth.DataOwnerConfigDAO</value>
-		</property>
-		<property name="target" ref="baseDAOSupport" />
-		<property name="targetSource.target.entityClass" value="works.tonny.apps.auth.DataOwnerConfig" />
-	</bean>
+    <bean id="dataOwnerConfigDAO" parent="abstractDao">
+        <property name="proxyInterfaces">
+            <value>works.tonny.apps.auth.DataOwnerConfigDAO</value>
+        </property>
+        <property name="target" ref="baseDAOSupport"/>
+        <property name="targetSource.target.entityClass" value="works.tonny.apps.auth.DataOwnerConfig"/>
+    </bean>
 
 
 </beans>

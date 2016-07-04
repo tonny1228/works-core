@@ -7,7 +7,12 @@ import org.llama.library.utils.Assert;
 import org.llama.library.utils.PropertiesUtils;
 import org.springframework.transaction.annotation.Transactional;
 import works.tonny.apps.Query;
-import works.tonny.apps.core.*;
+import works.tonny.apps.core.Catalog;
+import works.tonny.apps.core.CatalogQuery;
+import works.tonny.apps.core.CatalogQueryImpl;
+import works.tonny.apps.core.CatalogService;
+import works.tonny.apps.core.CatalogTreeNode;
+import works.tonny.apps.core.TreeService;
 import works.tonny.apps.core.dao.CatalogDAO;
 import works.tonny.apps.exception.DataException;
 import works.tonny.apps.support.BaseDAOSupport;
@@ -161,7 +166,8 @@ public class CatalogServiceImpl extends AuthedAbstractService implements Catalog
     public Catalog get(String id) {
         Catalog catalog = catalogDAO.get(id);
         //        System.out.println(catalog.getTreeNode().getIdLayer());
-        log.debug(catalog.getTreeNode().getIdLayer());
+        if (catalog != null && catalog.getTreeNode() != null)
+            log.debug(catalog.getTreeNode().getIdLayer());
         return catalog;
     }
 

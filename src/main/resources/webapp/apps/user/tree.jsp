@@ -105,7 +105,7 @@
 			
 			if(!name) name='';
 			$.ajax({
-			    url: '${pageContext.request.contextPath}/user/listUser.action?id='+id+'&type='+type+'&name='+name,
+			    url: '${pageContext.request.contextPath}/user/listUser.action?id='+id+'&type='+type+'&name='+name+"&page="+page,
 			    type: 'post',
 			    dataType: "text",
 			    error: function(e,err){

@@ -39,6 +39,6 @@ function OK(){
 //-->
 </script>
 </t:fragment>
-<t:tpl menuId="__subuser" param="support=form">
+<t:tpl menuId="__buuser" param="support=form">
     <%@ include file="user_add_form.jsp"%>
 </t:tpl>

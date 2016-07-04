@@ -43,6 +43,11 @@ public class UserPositionListener implements MessageListener<Position> {
         }
     }
 
+    @Override
+    public boolean isSingleton() {
+        return true;
+    }
+
 
     public UserPositionDAO getUserPositionDAO() {
         return userPositionDAO;
