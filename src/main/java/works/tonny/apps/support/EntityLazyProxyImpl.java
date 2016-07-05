@@ -6,10 +6,16 @@ package works.tonny.apps.support;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.collection.AbstractPersistentCollection;
+import org.hibernate.mapping.Collection;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import works.tonny.apps.AbstractService;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author 祥栋
@@ -33,12 +39,19 @@ public class EntityLazyProxyImpl extends AbstractService implements EntityLazyPr
                 return (T) collection;
             }
             dao.refresh(collection.getOwner());
+
             try {
                 final String field = StringUtils.substringAfterLast(collection.getRole(), ".");
-                AbstractPersistentCollection target = (AbstractPersistentCollection) PropertyUtils.getProperty(
-                        collection.getOwner(), field);
+                Object owner = collection.getOwner();
+                dao.refresh(owner);
+
+                Object target = search(collection, owner, field);
+                if (target == null) {
+                    return (T) collection;
+                }
                 PropertyUtils.setProperty(collection.getOwner(), field, target);
-                target.toString();
+                ((AbstractPersistentCollection) target).forceInitialization();
+                return (T) target;
             } catch (Exception e) {
                 log.error(e);
             }
@@ -77,9 +90,9 @@ public class EntityLazyProxyImpl extends AbstractService implements EntityLazyPr
         return (T) entity;
     }
 
+
     /**
-     * @see works.tonny.support.zxtx.apps.ssh.EntityLazyProxy#lookup(java.io.Serializable,
-     * java.lang.String)
+     * String)
      */
     @SuppressWarnings("unchecked")
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -89,16 +102,23 @@ public class EntityLazyProxyImpl extends AbstractService implements EntityLazyPr
             if (collection.wasInitialized()) {
                 return;
             }
-            dao.refresh(collection.getOwner());
+
             try {
                 final String field = StringUtils.substringAfterLast(collection.getRole(), ".");
-                AbstractPersistentCollection target = (AbstractPersistentCollection) PropertyUtils.getProperty(
-                        collection.getOwner(), field);
+                Object owner = collection.getOwner();
+                dao.refresh(owner);
+
+                Object target = search(collection, owner, field);
+                if (target == null) {
+                    return;
+                }
                 PropertyUtils.setProperty(collection.getOwner(), field, target);
-                target.toString();
+                ((AbstractPersistentCollection) target).forceInitialization();
+//                target.toString();
             } catch (Exception e) {
                 log.error(e);
             }
+            return;
         }
 
         if ((entity instanceof HibernateProxy)
@@ -108,9 +128,74 @@ public class EntityLazyProxyImpl extends AbstractService implements EntityLazyPr
         }
     }
 
+    private Object search(Object originalTarget, Object originalOwner, String originalField) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        Object target = PropertyUtils.getProperty(originalOwner, originalField);
+        if (originalTarget != target) {
+            return target;
+        }
+
+        Set scaned = new HashSet();
+
+        Field[] fields = originalOwner.getClass().getDeclaredFields();
+//        scaned.add(originalOwner);
+        for (Field field1 : fields) {
+            if (field1.getType().isPrimitive() || field1.getType().equals(String.class) || field1.getType().isAssignableFrom(Collection.class) || field1.getType().getName().startsWith("java.")) {
+                continue;
+            }
+            Object value = PropertyUtils.getProperty(originalOwner, field1.getName());
+            Object o = scan(scaned, originalTarget, originalOwner, originalField, value, field1);
+            if (o != null) {
+                return o;
+            }
+        }
+        return null;
+    }
+
+
+    private Object scan(Set scaned, Object originalTarget, Object originalOwner, String originalField, Object value, Field field) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        if (value == null) {
+            return null;
+        }
+        Field[] fields = value.getClass().getDeclaredFields();
+        scaned.add(value);
+        for (Field field1 : fields) {
+            if (field1.getType().isPrimitive() || field1.getType().equals(String.class) || field1.getType().getName().startsWith("java.")) {
+                continue;
+            }
+
+            try {
+                Object v = PropertyUtils.getProperty(value, field1.getName());
+                if (v == null) {
+                    continue;
+                }
+                if (scaned.contains(v)) {
+                    continue;
+                }
+                if (v.getClass().equals(originalOwner.getClass())) {
+                    Object target = PropertyUtils.getProperty(v, originalField);
+                    if (target != originalTarget) {
+                        return target;
+                    }
+                } else {
+                    Object newValue = scan(scaned, originalTarget, originalOwner, originalField, v, field1);
+                    if (newValue != null) {
+                        return newValue;
+                    }
+                }
+            } catch (IllegalAccessException e) {
+//                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+//                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+//                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     /**
-     * @see com.zxtx.apps.support.EntityLazyProxy#refresh(java.lang.Object,
-     * java.lang.String[])
+     * @see EntityLazyProxy#refresh(Object,
+     * String[])
      */
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -140,5 +225,4 @@ public class EntityLazyProxyImpl extends AbstractService implements EntityLazyPr
     public void setDao(BaseDAOSupport dao) {
         this.dao = dao;
     }
-
 }
