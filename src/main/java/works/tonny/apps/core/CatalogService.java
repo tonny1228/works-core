@@ -1,15 +1,15 @@
 package works.tonny.apps.core;
 
-import java.util.List;
-
 import org.springframework.transaction.annotation.Transactional;
 import works.tonny.apps.EntityService;
 import works.tonny.apps.auth.AuthType;
 import works.tonny.apps.auth.AuthVerify;
 
-import javax.persistence.RollbackException;
+import java.util.List;
 
 public interface CatalogService extends EntityService<Catalog> {
+    String KEY = Catalog.class.getName() + ".";
+
     /**
      * 新建子目录
      *
@@ -23,7 +23,7 @@ public interface CatalogService extends EntityService<Catalog> {
      * 移动栏目
      *
      * @param subId子目录字符串id
-     * @param parentId       新父栏目id
+     * @param parentId      新父栏目id
      */
     @AuthVerify(AuthType.UPDATE)
     void moveCatalog(String subId, String parentId);

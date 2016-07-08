@@ -3,6 +3,8 @@ package works.tonny.apps.core.service;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.llama.library.cache.Cache;
+import org.llama.library.cache.Failover;
 import org.llama.library.utils.Assert;
 import org.llama.library.utils.PropertiesUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +23,14 @@ import works.tonny.apps.support.message.MessageManager;
 import works.tonny.apps.user.AuthedAbstractService;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class CatalogServiceImpl extends AuthedAbstractService implements CatalogService {
+
+    public static final String KEY = Catalog.class.getName() + ".";
 
     /**
      * @Fields LAYER_LENGTH :
@@ -36,6 +42,16 @@ public class CatalogServiceImpl extends AuthedAbstractService implements Catalog
     // private Map<String, EntityUpdateListener<Catalog>> listeners;
 
     private TreeService treeService;
+
+    /**
+     * 缓存框架
+     */
+    private Cache cache;
+
+    /**
+     * 缓存的父key
+     */
+    private Set<String> cachedKeys = new HashSet<String>();
 
     /**
      * @param catalog
@@ -60,8 +76,21 @@ public class CatalogServiceImpl extends AuthedAbstractService implements Catalog
         // /
         // dispatchCreateListner(catalog);
         MessageManager.notify(Catalog.class, MessageEvent.CREATED, catalog);
+
+        clearCache();
+
         return id;
     }
+
+    private void clearCache() {
+        if (cache == null) {
+            return;
+        }
+        for (String cachedKey : cachedKeys) {
+            cache.remove(cachedKey);
+        }
+    }
+
 
     /**
      * @param catalog
@@ -164,8 +193,17 @@ public class CatalogServiceImpl extends AuthedAbstractService implements Catalog
      * @return
      */
     public Catalog get(String id) {
+        return getFromCache(id);
+    }
+
+    /**
+     * 从数据库中查询
+     *
+     * @param id
+     * @return
+     */
+    private Catalog getFromDB(String id) {
         Catalog catalog = catalogDAO.get(id);
-        //        System.out.println(catalog.getTreeNode().getIdLayer());
         if (catalog != null && catalog.getTreeNode() != null)
             log.debug(catalog.getTreeNode().getIdLayer());
         return catalog;
@@ -208,6 +246,7 @@ public class CatalogServiceImpl extends AuthedAbstractService implements Catalog
         } catch (Exception e) {
             log.warn(e);
         }
+        clearCache();
         // if (listeners != null) {
         // for (EntityUpdateListener<Catalog> listener : listeners.values()) {
         // listener.updated(loaded);
@@ -244,6 +283,7 @@ public class CatalogServiceImpl extends AuthedAbstractService implements Catalog
 		 * catalogDAO.listSubsByLayer(catalog.getTreeNode().getIdLayer(), 100,
 		 * catalog.getTreeNode().getIdLayer().length(), page++, 100); }
 		 */
+        clearCache();
     }
 
     /**
@@ -296,6 +336,7 @@ public class CatalogServiceImpl extends AuthedAbstractService implements Catalog
         // listener.updated(catalog);
         // }
         // }
+        clearCache();
     }
 
     /**
@@ -353,6 +394,7 @@ public class CatalogServiceImpl extends AuthedAbstractService implements Catalog
         //        List<Catalog> subs = catalogDAO.listSubs(id);
         // subs.remove(0);
         List<Catalog> list = createQuery().parentId(id).orderByOrderNo().list();
+
         return list;
     }
 
@@ -392,7 +434,9 @@ public class CatalogServiceImpl extends AuthedAbstractService implements Catalog
      */
     public CatalogQuery createQuery() {
         try {
-            return new CatalogQueryImpl((BaseDAOSupport) PropertyUtils.getProperty(catalogDAO, "targetSource.target"));
+            CatalogQueryImpl catalogQuery = new CatalogQueryImpl(
+                    (BaseDAOSupport) PropertyUtils.getProperty(catalogDAO, "targetSource.target"), cache, cachedKeys);
+            return catalogQuery;
         } catch (Exception e) {
             log.error(e);
             return null;
@@ -405,8 +449,9 @@ public class CatalogServiceImpl extends AuthedAbstractService implements Catalog
      * @return
      */
     @Transactional(rollbackFor = Exception.class, readOnly = true)
-    public List<Catalog> listSubs(String id, int type, int depth) {
-        Catalog catalog = get(id);
+    public List<Catalog> listSubs(final String id, final int type, final int depth) {
+        final Catalog catalog = get(id);
+
         CatalogQuery catalogQuery = createQuery().idLayerLike(catalog.getTreeNode().getIdLayer());
         if (type > -1) {
             catalogQuery.type(type);
@@ -415,6 +460,7 @@ public class CatalogServiceImpl extends AuthedAbstractService implements Catalog
         if (depth > -1) {
             catalogQuery.depthGreateThan(catalog.getTreeNode().getDepth()).depthLessThan(depth + 1);
         }
+
         return catalogQuery.orderByIdLayer(Query.Direction.ASC).list();
     }
 
@@ -424,13 +470,15 @@ public class CatalogServiceImpl extends AuthedAbstractService implements Catalog
      */
     @Transactional(rollbackFor = Exception.class)
     public Catalog root(String id) {
-        Catalog catalog = get(id);
+        Catalog catalog = getFromCache(id);
         Assert.notNull(catalog);
         if (StringUtils.isEmpty(catalog.getTreeNode().getParentId())) {
             return catalog;
         }
 
-        return get(StringUtils.substringBefore(catalog.getTreeNode().getIdLayer(), ","));
+
+        Catalog root = getFromCache(StringUtils.substringBefore(catalog.getTreeNode().getIdLayer(), ","));
+        return root;
         //
         // List<Catalog> list =
         // catalogDAO.listSubsByLayer(catalog.getTreeNode().getIdLayer().substring(0,
@@ -440,6 +488,26 @@ public class CatalogServiceImpl extends AuthedAbstractService implements Catalog
         // return list.get(0);
         // }
         // return null;
+    }
+
+    /**
+     * 缓存数据
+     *
+     * @param id
+     */
+    private Catalog getFromCache(final String id) {
+        if (cache == null) {
+            return getFromDB(id);
+        }
+        Catalog cached = this.cache.getFromCache(KEY + id, new Failover() {
+            @Override
+            public Object getObject(String key) {
+                cachedKeys.add(key);
+                return getFromDB(id);
+            }
+        });
+
+        return cached;
     }
 
     /**
@@ -515,5 +583,11 @@ public class CatalogServiceImpl extends AuthedAbstractService implements Catalog
     // listeners) {
     // this.listeners = listeners;
     // }
+    public Cache getCache() {
+        return cache;
+    }
 
+    public void setCache(Cache cache) {
+        this.cache = cache;
+    }
 }

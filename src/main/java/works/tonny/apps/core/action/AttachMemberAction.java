@@ -75,8 +75,8 @@ public class AttachMemberAction extends MemberAuthedAction {
 	}
 
 	public String upload() {
-		list();
-		browse();
+//		list();
+//		browse();
 		return SUCCESS;
 	}
 

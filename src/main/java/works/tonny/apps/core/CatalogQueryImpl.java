@@ -3,8 +3,15 @@
  */
 package works.tonny.apps.core;
 
+import org.llama.library.cache.Cache;
+import org.llama.library.cache.Failover;
+import org.llama.library.utils.PagedList;
 import works.tonny.apps.impl.AbstractCriteriaQuery;
 import works.tonny.apps.support.BaseDAOSupport;
+import works.tonny.apps.util.KeyBuilder;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author 祥栋
@@ -46,11 +53,17 @@ public class CatalogQueryImpl extends AbstractCriteriaQuery<CatalogQuery, Catalo
 
     private Integer depthLessThan;
 
+    private Set<String> cachedKeys;
+
+    private Cache cache;
+
     /**
      * @param catalogDAO
      */
-    public CatalogQueryImpl(BaseDAOSupport catalogDAO) {
+    public CatalogQueryImpl(BaseDAOSupport catalogDAO, Cache cache, Set<String> cachedParentKeys) {
         this.dao = catalogDAO;
+        this.cache = cache;
+        this.cachedKeys = cachedParentKeys;
     }
 
     /**
@@ -78,8 +91,6 @@ public class CatalogQueryImpl extends AbstractCriteriaQuery<CatalogQuery, Catalo
         else
             addParameter(order.contains("treeNode.orderNo ASC"), "orderNo", new String[]{}, new Object[]{});
 
-
-
         //        addParameter(parentId, "treeNode.parentId", ListSupport.MUST, ListSupport.EQUALS);
         //        addParameter(name, "name", ListSupport.MUST, ListSupport.EQUALS);
         //        // addParameter(nameLike, "name", ListSupport.MUST, ListSupport.LIKE);
@@ -98,6 +109,85 @@ public class CatalogQueryImpl extends AbstractCriteriaQuery<CatalogQuery, Catalo
         //        addParameter(display, "display", ListSupport.MUST, ListSupport.EQUALS);
         //        addParameter(type, "type", ListSupport.MUST, ListSupport.EQUALS);
 
+    }
+
+    @Override
+    public Catalog singleResult() {
+        if (cache == null) {
+            return super.singleResult();
+        }
+        String key = buildKey();
+
+        Catalog catalog = cache.getFromCache(key, new Failover() {
+            @Override
+            public Object getObject(String key) {
+                Catalog catalog = CatalogQueryImpl.super.singleResult();
+                cachedKeys.add(key);
+                return catalog;
+            }
+        });
+
+        return catalog;
+    }
+
+    @Override
+    public List<Catalog> executeList() {
+        if (cache == null) {
+            return super.executeList();
+        }
+        String key = buildKey();
+
+        List list = cache.getFromCache(key, new Failover() {
+            @Override
+            public Object getObject(String key) {
+                cachedKeys.add(key);
+                List list = CatalogQueryImpl.super.executeList();
+                return list;
+            }
+        });
+        return list;
+    }
+
+    private String buildKey() {
+        return new KeyBuilder(CatalogService.KEY).append(parentId).append(name).append(nameLike).append(aliasLike).append(idLayer)
+                .append(idLayerLike).append(depthGreateThan).append(depthLessThan).append(status)
+                .append(display).append(order).toString();
+    }
+
+    @Override
+    protected PagedList<Catalog> executeList(final int page, final int pagesize) {
+        if (cache == null) {
+            return super.executeList(page, pagesize);
+        }
+        String key = buildKey();
+
+        PagedList list = cache.getFromCache(key, new Failover() {
+            @Override
+            public Object getObject(String key) {
+                cachedKeys.add(key);
+                List list = CatalogQueryImpl.super.executeList(page, pagesize);
+                return list;
+            }
+        });
+        return list;
+    }
+
+    @Override
+    protected PagedList<Catalog> executeSubList(final int offset, final int limit) {
+        if (cache == null) {
+            return super.executeSubList(offset, limit);
+        }
+        String key = buildKey();
+
+        PagedList list = cache.getFromCache(key, new Failover() {
+            @Override
+            public Object getObject(String key) {
+                cachedKeys.add(key);
+                List list = CatalogQueryImpl.super.executeSubList(offset, limit);
+                return list;
+            }
+        });
+        return list;
     }
 
     /**
@@ -239,8 +329,6 @@ public class CatalogQueryImpl extends AbstractCriteriaQuery<CatalogQuery, Catalo
 
     /**
      * {@inheritDoc}
-     *
-     * @see works.tonny.apps.core.CatalogQuery#orderByIdLayer()
      */
     public CatalogQuery orderByIdLayer(Direction direction) {
         orderBy("treeNode.idLayer", Direction.ASC);

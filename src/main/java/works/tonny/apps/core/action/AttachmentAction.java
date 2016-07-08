@@ -82,8 +82,8 @@ public class AttachmentAction extends AuthedAction {
 	}
 
 	public String upload() {
-		list();
-		browse();
+//		list();
+//		browse();
 		return SUCCESS;
 	}
 
