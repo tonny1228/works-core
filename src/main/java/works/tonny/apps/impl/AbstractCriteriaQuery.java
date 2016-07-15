@@ -8,6 +8,7 @@ import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.llama.library.utils.PagedList;
+import org.llama.library.utils.StringUtils;
 import works.tonny.apps.Query;
 import works.tonny.apps.support.ListSupport;
 
@@ -284,6 +285,11 @@ public abstract class AbstractCriteriaQuery<T extends Query<?, ?>, U> extends Ab
                     operators.toArray(new String[]{}), order.toArray(new String[]{}), null, offset, limit);
         }
     }
+
+    protected String n(String str) {
+        return StringUtils.defaultIfEmpty(str, null);
+    }
+
 
     /**
      *
