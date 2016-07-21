@@ -4,6 +4,9 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.llama.library.log.LogFactory;
 import org.llama.library.log.Logger;
+import org.llama.library.utils.PageList;
+import org.llama.library.utils.PagedList;
+import org.llama.library.utils.ThreadLocalMap;
 import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.springframework.aop.IntroductionInterceptor;
 
@@ -58,6 +61,15 @@ public class MybatisInterceptor implements IntroductionInterceptor {
         Object executor = MAPPED.get(aClass).getObject();
         Method method = aClass.getDeclaredMethod(methodInvocation.getMethod().getName(), methodInvocation
                 .getMethod().getParameterTypes());
+        if (method.getReturnType().equals(PagedList.class)) {
+            ThreadLocalMap.getInstance().putObject(PageList.class, true);
+            PagedList invoke = (PagedList) method.invoke(executor, methodInvocation.getArguments());
+            Integer count = ThreadLocalMap.getInstance().getObject(PageList.class);
+            invoke.setTotal(count);
+            invoke.setOffset((Integer) methodInvocation.getArguments()[methodInvocation.getArguments().length - 2]);
+            invoke.setPagesize((Integer) methodInvocation.getArguments()[methodInvocation.getArguments().length - 1]);
+            return invoke;
+        }
         return method.invoke(executor, methodInvocation.getArguments());
     }
 }

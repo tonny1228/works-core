@@ -25,7 +25,7 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 @ContextConfiguration(locations = {
         "classpath*:/applicationContext-basic-test.xml",
         "classpath*:/backup/applicationContext-backup.xml",
-        "classpath*:config/applicationContext-*mysql.xml",
+        "classpath*:config/applicationContext-mysql-*.xml",
         "classpath*:/config/applicationContext-mod-*.xml"})
 public abstract class Test extends AbstractJUnit4SpringContextTests {
 }

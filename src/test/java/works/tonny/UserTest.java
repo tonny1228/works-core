@@ -10,7 +10,7 @@ import works.tonny.apps.user.dao.UserInfoEntityDAO;
  * Created by tonny on 2015/9/10.
  */
 @ContextConfiguration(locations = {"classpath:/applicationContext-basic-test.xml",
-        "classpath*:config/applicationContext-*mysql.xml", "classpath*:/config/applicationContext-mod-*.xml"})
+        "classpath*:config/applicationContext-mysql-*.xml", "classpath*:/config/applicationContext-mod-*.xml"})
 
 public class UserTest extends AbstractJUnit4SpringContextTests {
 

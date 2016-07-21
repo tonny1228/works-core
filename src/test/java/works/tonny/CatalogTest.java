@@ -21,7 +21,7 @@ import java.util.List;
  * Created by tonny on 2015/9/9.
  */
 @ContextConfiguration(locations = {"classpath:/applicationContext-basic-test.xml",
-        "classpath*:config/applicationContext-*mysql.xml", "classpath*:/config/applicationContext-mod-*.xml"})
+        "classpath*:config/applicationContext-mysql-*.xml", "classpath*:/config/applicationContext-mod-*.xml"})
 public class CatalogTest extends AbstractJUnit4SpringContextTests {
 
     @Autowired

@@ -17,7 +17,7 @@ import java.util.List;
  * @author 祥栋
  */
 @ContextConfiguration(locations = {"classpath:/applicationContext-basic-test.xml",
-        "classpath*:config/applicationContext-*mysql.xml", "classpath*:/config/applicationContext-mod-*.xml"})
+        "classpath*:config/applicationContext-mysql-*.xml", "classpath*:/config/applicationContext-mod-*.xml"})
 public class DAOTest extends AbstractJUnit4SpringContextTests {
     //    @Autowired
     BaseDAOSupport<Catalog> support;

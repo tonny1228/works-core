@@ -15,7 +15,7 @@ import java.io.ObjectOutputStream;
  * Created by tonny on 2015/8/5.
  */
 @ContextConfiguration(locations = { "classpath*:/config/applicationContext-basic.xml",
-		"classpath*:config/applicationContext-*mysql.xml", "classpath*:/config/applicationContext-mod-*.xml" })
+		"classpath*:config/applicationContext-mysql-*.xml", "classpath*:/config/applicationContext-mod-*.xml" })
 public class TestCluster extends AbstractJUnit4SpringContextTests {
     @Autowired
     private AuthService authService;

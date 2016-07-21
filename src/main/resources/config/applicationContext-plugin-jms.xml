@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+    <!-- jms -->
+
+    <bean id="jmsConnectionFactory" class="org.apache.activemq.spring.ActiveMQConnectionFactory"
+          lazy-init="true">
+        <property name="brokerURL" value="${jms.server.url}"/>
+        <property name="useAsyncSend" value="true"/>
+    </bean>
+
+
+    <bean id="pooledJmsConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory"
+          lazy-init="true">
+        <property name="connectionFactory" ref="jmsConnectionFactory"/>
+        <property name="maxConnections" value="10"></property>
+        <property name="maximumActiveSessionPerConnection" value="10"></property>
+    </bean>
+
+
+    <bean id="messageConverter" class="works.tonny.apps.support.jms.MessageConverter" lazy-init="true"/>
+
+
+</beans>
